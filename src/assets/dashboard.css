@@ -1,0 +1,90 @@
+*{
+  margin: 0;
+  padding: 0;
+  font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; 
+}
+
+body::-webkit-scrollbar{
+  display: none;
+}
+
+.home{
+  background-color: #222831;
+  width: 100%;
+  height: 100dvh; /* 100 to 40 */ 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: height 0.5s;
+}
+
+.home-animate{
+  height: 40dvh !important;
+}
+
+.home .card{
+  z-index: 1;
+  background-color: #76ABAE;
+  width: 100%;
+  height: 60vh; /* 60vh to 30vh */
+  position: fixed;
+  top: 0;
+  border-radius: 0 0 25% 25%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  transition: 0.5s height;
+}
+
+.card-animate{
+  height: 30vh !important;
+}
+
+.home .card .search{
+  width: 50%;
+  display: flex;
+}
+
+.home .card .search input {
+  margin-bottom: 45px;
+  border-radius: 7px 0 0 7px;
+  border: none;
+  outline: 2px solid transparent;
+  width: 80%;
+  height: 45px;
+  padding: 0 7px;
+  font-size: 18px;
+}
+
+.home .card .search input:focus {
+  outline: 3px solid #222831;
+}
+
+.home .card .search button{
+  width: 100px;
+  height: 45px;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 0 7px 7px 0;
+  background-color: #222831;
+  color: white;
+}
+
+.data{
+  border: 1px solid white;
+  background-color: #222831;
+  width: 100%;
+  height: 100vh;
+}
+
+@media only screen and (max-width:700px){
+  .home .card{
+    height: 40vh;
+  }
+
+  .home .card .search{
+    width: 80%;
+  }
+}
