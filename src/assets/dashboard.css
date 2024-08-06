@@ -32,13 +32,19 @@ body::-webkit-scrollbar{
   border-radius: 0 0 25% 25%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   transition: 0.5s height;
 }
 
 .card-animate{
   height: 30vh !important;
+}
+
+.home .card h2{
+  color: #31363F;
+  margin-top: 130px;
+  font-size: 40px;
 }
 
 .home .card .search{
@@ -84,7 +90,14 @@ body::-webkit-scrollbar{
     height: 40vh;
   }
 
+  .home .card h2{
+      margin-top: 100px;
+      font-size: 20px;
+      opacity: 0;
+  }
+
   .home .card .search{
     width: 80%;
+    margin-bottom: 40px;
   }
 }

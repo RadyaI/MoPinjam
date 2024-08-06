@@ -32,6 +32,7 @@ export default function Dashboard() {
       <Navbar />
       <div className={`home ${search ? 'home-animate' : ''}`}>
         <div className={`card ${search ? 'card-animate' : ''}`}>
+          <h2>Selamat Datang di DigiPerpus</h2>
           <div className="search">
             <input type="text" placeholder={placeholder} onKeyUp={(e) => animateCard(e)} onChange={(e) => setInput(e.target.value)} />
             <button onClick={searchBook}>CARI</button>

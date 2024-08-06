@@ -14,8 +14,12 @@ const Title = styled.h1`
     margin-left:40px;
     color:#222831;
     `
+    
 const Menu = styled.p`
     cursor:pointer;
+
+    @media only screen and (max-width: 700px) {
+    display: none;
     `
 
 const Button = styled.button`
@@ -26,7 +30,7 @@ const Button = styled.button`
     background-color:#222831;
     color:white;
     cursor:pointer;
-    `
+  }`
 
 const Group = styled.div`
     margin-right:30px;
