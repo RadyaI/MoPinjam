@@ -47,8 +47,11 @@ export default function Dashboard() {
           <div className="card-container">
 
             <div className="card">
-              <div className="img-cover"><img src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="Buku" /></div>
-              <div className="desc"></div>
+              <div className="img-cover"><img loading='lazy' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="Buku" /></div>
+              <div className="desc">
+                <div className="author"><small>My Name Here</small></div>
+                <div className="title">Secrets in a silicon valley startup</div>
+              </div>
             </div>
 
           </div>

@@ -34,7 +34,7 @@ const Button = styled.button`
 
 const Group = styled.div`
     margin-right:30px;
-    width:220px;
+    width:250px;
     display:flex;
     align-items:center;
     justify-content:space-around;
@@ -46,7 +46,7 @@ export default function Navbar() {
             <NavWrapper>
                 <Title>DigiPerpus</Title>
                 <Group>
-                    <Menu>Pinjam</Menu>
+                    <Menu>Semua Buku</Menu>
                     <Button>LOGIN</Button>
                 </Group>
             </NavWrapper>

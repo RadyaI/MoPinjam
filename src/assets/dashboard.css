@@ -95,27 +95,49 @@ body::-webkit-scrollbar{
   flex-wrap: wrap;
 }
 
-.data .card-container .card{
-  border: 1px solid white;
+.data .card-container .card {
+  padding-top: 10px;
   width: 200px;
-  height: 270px;
+  height: 300px;
+  padding-bottom: 10px;
   cursor: pointer;
+  background-color: #393E46; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);   
+  border-radius: 8px; 
+  transition: transform 0.2s, box-shadow 0.2s;
 }
+
 
 .data .card-container .card .img-cover{
   width: 100%;
-  height: 80%;
+  height: 70%;
 }
 
 .data .card-container .card .img-cover img{
-  object-fit: cover;
+  object-fit: contain;
   width: 100%;
   height: 100%;
 }
 
 .data .card-container .card .desc{
   width: 100%;
-  height: 20%;
+  height: 30%;
+  color: #FFFFFF;
+  overflow-y: auto;
+}
+
+.data .card-container .card .desc::-webkit-scrollbar{
+  display: none;
+}
+
+.data .card-container .card .desc .author{
+  margin-left: 10px;
+  margin-top: 15px;
+  color: grey;
+}
+.data .card-container .card .desc .title{
+  margin-left: 10px;
+  margin-top: 5px;
 }
 
 @media only screen and (max-width:700px){
