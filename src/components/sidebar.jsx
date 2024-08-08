@@ -1,3 +1,5 @@
-export default function sidebar() {
-    
+export default function Sidebar() {
+    return (
+        <></>
+    )
 }
