@@ -3,3 +3,8 @@
     height: auto;
     display: flex;
 }
+
+.content{
+    width: 70%;
+    height: 100vh;
+}
