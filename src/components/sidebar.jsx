@@ -21,15 +21,6 @@ export default function Sidebar() {
                         <div className="stok">
                             <p>Filter berdasarkan stok</p>
                             <div className="input">
-                                <div className="tersedia">
-                                    <input
-                                        type="radio"
-                                        value="tersedia"
-                                        checked={selectedOption === 'tersedia'}
-                                        onChange={(e) => setSelectedOption(e.target.value)}
-                                    />
-                                    <label>Tersedia</label>
-                                </div>
                                 <div className="semua">
                                     <input
                                         type="radio"
@@ -38,6 +29,15 @@ export default function Sidebar() {
                                         onChange={(e) => setSelectedOption(e.target.value)}
                                     />
                                     <label>Semua</label>
+                                </div>
+                                <div className="tersedia">
+                                    <input
+                                        type="radio"
+                                        value="tersedia"
+                                        checked={selectedOption === 'tersedia'}
+                                        onChange={(e) => setSelectedOption(e.target.value)}
+                                    />
+                                    <label>Tersedia</label>
                                 </div>
                             </div>
                         </div>
