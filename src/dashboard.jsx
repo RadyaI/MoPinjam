@@ -8,7 +8,7 @@ export default function Dashboard() {
   const [search, setsearch] = useState(false)
   const [input, setInput] = useState(null)
   const [placeholder, setPlaceholder] = useState('Cari buku yang kamu inginkan...')
-  const [sambutan, setSambutan] = useState('Selamat Datang di DigiPerpus')
+  const [sambutan, setSambutan] = useState('Selamat Datang di MoPinjam')
 
   function animateCard(e) {
     if (e.key === "Enter" && input) {
