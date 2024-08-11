@@ -49,7 +49,7 @@ export default function Navbar() {
     return (
         <>
             <NavWrapper>
-                <Title onClick={() => { route('/') }}>DigiPerpus</Title>
+                <Title onClick={() => { route('/') }}>MoPinjam</Title>
                 <Group>
                     <Menu onClick={() => { route('/buku') }} >Semua Buku</Menu>
                     <Button>LOGIN</Button>
