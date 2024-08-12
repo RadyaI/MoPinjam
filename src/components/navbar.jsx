@@ -2,6 +2,8 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import styled, { keyframes } from "styled-components"
 
+import Loader from "./loader"
+
 const NavWrapper = styled.div`
     position:fixed;
     height:80px;
@@ -108,22 +110,31 @@ const NavMobile = styled.div`
 export default function Navbar() {
 
     const [toggleNav, setToggleNav] = useState(false)
+    const [loading, setLoading] = useState(false)
     const route = useNavigate()
+
+    function navigate(params) {
+        setLoading(true)
+        setTimeout(() => {
+            route(`${params}`)
+        }, 650);
+    }
 
     return (
         <>
+            {loading === true && (<Loader></Loader>)}
             {toggleNav === true && (
                 <NavMobile>
                     <div className="card">
-                        <p onClick={() => route('/buku')}>Semua Buku</p>
+                        <p onClick={() => navigate('/buku')}>Semua Buku</p>
                         <button>LOGIN</button>
                     </div>
                 </NavMobile>
             )}
             <NavWrapper>
-                <Title onClick={() => { route('/') }}>MoPinjam</Title>
+                <Title onClick={() => navigate('/')}>MoPinjam</Title>
                 <Group>
-                    <Menu onClick={() => { route('/buku') }} >Semua Buku</Menu>
+                    <Menu onClick={() => navigate('/buku')} >Semua Buku</Menu>
                     <Button>LOGIN</Button>
                     <i className="bi bi-list" onClick={() => setToggleNav(!toggleNav)}></i>
                 </Group>
