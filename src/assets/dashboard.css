@@ -8,6 +8,21 @@ body::-webkit-scrollbar{
   display: none;
 }
 
+.circle{
+  background-color: #76ABAE;
+  width: 250px;
+  height: 250px;
+  border: 1px solid black;
+  position: fixed;
+  z-index: 999999;
+  right: 0;
+  bottom: 0;
+  margin-right: -100px;
+  margin-bottom: -105px;
+  border-radius: 50%;
+  filter: blur(50px);
+}
+
 .home{
   background-color: #222831;
   width: 100%;
@@ -16,6 +31,7 @@ body::-webkit-scrollbar{
   justify-content: center;
   align-items: center;
   transition: height 0.5s;
+  overflow-x: hidden;
 }
 
 .home-animate{

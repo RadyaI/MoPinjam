@@ -34,6 +34,7 @@ export default function Dashboard() {
     <>
       <Navbar />
       <div className={`home ${search ? 'home-animate' : ''}`}>
+        <div className="circle"></div>
         <div className={`card ${search ? 'card-animate' : ''}`}>
           <h2>{sambutan}</h2>
           <div className="search">
