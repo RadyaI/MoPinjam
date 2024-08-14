@@ -5,17 +5,23 @@ import Sidebar from './components/sidebar'
 
 export default function Semuabuku() {
 
-    const [search, setSearch] = useState(null)
+    const [search, setSearch] = useState('')
     const [filter, setFilter] = useState('Terbaru')
 
-    const book = [
-        { author: 'Fulan', title: 'How to basic' },
-        { author: 'Fulan', title: 'How to basic' },
-    ]
+    const [book, setBook] = useState([
+        { author: 'Fulan', title: 'How to train your dragon' },
+        { author: 'Fulan', title: 'Naruto' },
+    ])
 
     function BookList() {
-        const data = book.map(i =>
-            <div className="card">
+
+        let filteredBook = book
+        if (search != '') {
+            filteredBook = book.filter(i => i.title.toLowerCase().includes(search.toLowerCase()))
+
+        }
+        const data = filteredBook.map((i, index) =>
+            <div className="card" key={index}>
                 <div className="img-cover"><img loading='lazy' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="Buku" /></div>
                 <div className="desc">
                     <div className="author"><small>{i.author}</small></div>
@@ -23,7 +29,6 @@ export default function Semuabuku() {
                 </div>
             </div>
         )
-
         return data
     }
 
@@ -41,14 +46,6 @@ export default function Semuabuku() {
                         </select>
                     </div>
                     <div className="buku-data">
-
-                        {/* <div className="card">
-                            <div className="img-cover"><img loading='lazy' src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="Buku" /></div>
-                            <div className="desc">
-                                <div className="author"><small>My Name Here</small></div>
-                                <div className="title">Secrets in a silicon valley startup</div>
-                            </div>
-                        </div> */}
 
                         <BookList></BookList>
 
