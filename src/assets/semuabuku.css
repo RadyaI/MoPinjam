@@ -8,3 +8,55 @@
     width: 70%;
     height: 100vh;
 }
+
+.content .filter{
+    width: 60%;
+    height: 50px;
+    margin-top: 130px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.content .filter input{
+    height: 95%;
+    width: 500px;
+    font-size: 14px;
+    padding: 0 15px;
+    outline: none;
+    border:  none;
+    border-radius: 10px;
+    background-color: #efefef;
+}
+
+.content .filter select{
+    height: 80%;
+    width: 150px;
+    font-size: 14px;
+    padding: 0 15px;
+    cursor: pointer;
+    display: none;
+}
+
+@media only screen and (max-width:700px){
+    .content{
+        width: 100%;
+    }
+
+    .content .filter{
+        width: 90%;
+        margin: 0 auto;
+        margin-top: 130px;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .content .filter input{ 
+        width: 150px;
+    }
+
+    .content .filter select{
+        width: 100px;
+        display: block;
+    }
+}

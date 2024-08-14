@@ -12,7 +12,6 @@ body::-webkit-scrollbar{
   background-color: #76ABAE;
   width: 250px;
   height: 250px;
-  border: 1px solid black;
   position: fixed;
   z-index: 999999;
   right: 0;
