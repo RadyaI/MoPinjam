@@ -9,6 +9,7 @@ import { auth } from "../firebase"
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth"
 
 import Loader from "./loader"
+import LoginDulu from "./loginDulu"
 
 const NavWrapper = styled.div`
     position:fixed;
@@ -76,7 +77,7 @@ const NavMobile = styled.div`
     height:100vh;
     background-color:#EEEEEE;
     position:fixed;
-    z-index:999;
+    z-index:9;
     animation:${slideIn} 0.1s linear;
     margin-left: 0px;
 
@@ -116,15 +117,23 @@ const NavMobile = styled.div`
 export default function Navbar() {
 
     const [toggleNav, setToggleNav] = useState(false)
+    const [toggleAlert, setToggleAlert] = useState(false)
     const [loading, setLoading] = useState(false)
     const [isLogin, setIsLogin] = useState(Cookies.get('isLoggedIn') === 'true' || false)
     const route = useNavigate()
 
     function navigate(params) {
-        setLoading(true)
-        setTimeout(() => {
-            route(`${params}`)
-        }, 650);
+        if (!isLogin) {
+            setToggleAlert(true)
+            setTimeout(() => {
+                setToggleAlert(false)
+            }, 1500);
+        } else {
+            setLoading(true)
+            setTimeout(() => {
+                route(`${params}`)
+            }, 650);
+        }
     }
 
     async function login() {
@@ -164,10 +173,6 @@ export default function Navbar() {
         }
     }
 
-    useEffect(() => {
-        console.log(isLogin)
-    })
-
     return (
         <>
             {loading === true && (<Loader></Loader>)}
@@ -191,6 +196,7 @@ export default function Navbar() {
                     <i className="bi bi-list" onClick={() => setToggleNav(!toggleNav)}></i>
                 </Group>
             </NavWrapper>
+            { toggleAlert === true && (<LoginDulu></LoginDulu>)}
         </>
     )
 }
