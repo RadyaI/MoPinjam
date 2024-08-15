@@ -132,6 +132,7 @@ export default function Navbar() {
             setLoading(true)
             setTimeout(() => {
                 route(`${params}`)
+                setLoading(false)
             }, 650);
         }
     }
