@@ -129,6 +129,7 @@
     .content .buku-data{
         margin: 0 auto;
         margin-top: 20px;
+        gap: 10px;
     }
 
     .content .buku-data .card{
