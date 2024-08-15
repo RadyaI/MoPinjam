@@ -5,14 +5,16 @@
 }
 
 .content{
-    width: 70%;
+    width: 80%;
     height: 100vh;
+    background-color: #f6f7fb;
 }
 
 .content .filter{
     width: 60%;
     height: 50px;
     margin-top: 130px;
+    margin-left: 50px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -39,12 +41,17 @@
 }
 
 .content .buku-data{
+    background-color: #ffffff;
+    border: 1px solid #dbdbdd;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 0 auto;
     margin-top: 20px;
     width: 90%;
-    height: 65%;
+    height: 60%;
     display: flex;
     flex-wrap: wrap;
-    gap: 40px;
+    gap: 30px;
     overflow-y: auto;
 }
 
@@ -54,7 +61,8 @@
     height: 300px;
     padding-bottom: 10px;
     cursor: pointer;
-    background-color: #efefef; 
+    background-color: #f6f7fb;
+    box-shadow: 2px 2px #efefef; 
     border-radius: 8px; 
     transition: transform 0.2s, box-shadow 0.2s;
   }

@@ -11,6 +11,12 @@ export default function Semuabuku() {
     const [book, setBook] = useState([
         { author: 'Fulan', title: 'How to train your dragon' },
         { author: 'Fulan', title: 'Naruto' },
+        { author: 'Fulan', title: 'Naruto' },
+        { author: 'Fulan', title: 'Naruto' },
+        { author: 'Fulan', title: 'Naruto' },
+        { author: 'Fulan', title: 'Naruto' },
+        { author: 'Fulan', title: 'Naruto' },
+        { author: 'Fulan', title: 'Naruto' },
     ])
 
     function BookList() {

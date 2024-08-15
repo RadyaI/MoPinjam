@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import styled, { keyframes } from "styled-components"
 
 const appear = keyframes`
@@ -10,10 +9,10 @@ const appear = keyframes`
 const Card = styled.div`
     position:absolute;
     z-index:99;
-    background-color:red;
+    background-color:#8B0000;
     color:white;
     width:fit-content;
-    height:50px;
+    height:40px;
     padding:0 35px;
     border-radius:5px;
     bottom:0;
@@ -22,7 +21,7 @@ const Card = styled.div`
     display:flex;
     justify-content:center;
     align-items:center;  
-    font-size:18px;
+    font-size:16px;
     font-weight:bold;
     animation:${appear} 0.3s;
 `

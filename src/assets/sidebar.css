@@ -1,6 +1,7 @@
 .sidebar{
-    width: 30%;
+    width: 20%;
     height: 100vh;
+    /* background-color: #76ABAE; */
 }
 
 .sidebar .card{
@@ -16,7 +17,7 @@
 
 .sidebar .card .filter h2{
     width: 80%;
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid black;
     padding-bottom: 10px;
 }
 
@@ -27,11 +28,14 @@
 
 .sidebar .card .filter .basic-filter select{
     width: 100%;
-    height: 30px;
+    height: 35px;
     font-size: 16px;
     outline: none;
+    border: none;
     cursor: pointer;
-    padding: 0 5px;
+    border-radius: 5px;
+    padding: 0 7px;
+    background-color: #efefef;
 }
 
 .sidebar .card .filter .stok{
@@ -79,7 +83,7 @@
 }
 
 .sidebar .card .filter .kategori ul li{
-    text-decoration: underline solid grey;
+    text-decoration: underline solid black;
     cursor: pointer;
     margin-top: 5px;
 }
