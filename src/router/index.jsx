@@ -1,6 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import Dashboard from "../dashboard";
-import semuaBuku from '../semuaBuku'
+import semuaBuku from '../semuaBuku';
+
+import Protected from '../components/protectedRoute'
 
 
 const router = createBrowserRouter([
@@ -10,7 +12,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/buku',
-        Component: semuaBuku
+        Component: () => <Protected Component={semuaBuku} />
     }
 ])
 

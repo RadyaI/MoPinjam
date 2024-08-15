@@ -139,6 +139,7 @@ export default function Navbar() {
             }
             Cookies.set('loginData', JSON.stringify(data))
             Cookies.set('isLoggedIn', true)
+            location.reload()
         } catch (error) {
             console.log(error)
         }
