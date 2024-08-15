@@ -122,4 +122,8 @@
         margin: 0 auto;
         margin-top: 20px;
     }
+
+    .content .buku-data .card{
+        margin: 0 auto;
+    }
 }

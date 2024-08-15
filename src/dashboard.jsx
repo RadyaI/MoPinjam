@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import Cookies from 'js-cookie'
+
 import './assets/dashboard.css'
 import Navbar from './components/navbar'
 
@@ -29,6 +31,14 @@ export default function Dashboard() {
       setSambutan('')
     }
   }
+
+  useEffect(() => {
+    const login = Cookies.get('isLoggedIn') === 'true' || false
+    const loginData = login ? JSON.parse(Cookies.get('loginData')).displayName : false
+    if (login) {
+      setSambutan(`Halo ${loginData}`)
+    }
+  }, [])
 
   return (
     <>
