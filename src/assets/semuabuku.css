@@ -133,5 +133,7 @@
 
     .content .buku-data .card{
         margin: 0 auto;
+        width: 150px;
+        height: 220px;
     }
 }
