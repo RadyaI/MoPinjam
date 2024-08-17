@@ -4,7 +4,7 @@ import semuaBuku from '../semuaBuku';
 import BukuData from "../admin/bukuData";
 
 import Protected from '../components/protectedRoute'
-
+import NotFound from '../components/404/notfound'
 
 const router = createBrowserRouter([
     {
@@ -18,6 +18,10 @@ const router = createBrowserRouter([
     {
         path: '/buku/data',
         Component: () => <Protected Component={BukuData} />
+    },
+    {
+        path: "*",
+        Component: NotFound
     }
 ])
 
