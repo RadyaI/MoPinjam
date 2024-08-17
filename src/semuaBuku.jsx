@@ -17,14 +17,14 @@ export default function Semuabuku() {
         { author: 'Fulan', title: 'Naruto' },
         { author: 'Fulan', title: 'Naruto' },
         { author: 'Fulan', title: 'Naruto' },
+        { author: 'Radya', title: 'Wanpis' },
     ])
 
     function BookList() {
 
         let filteredBook = book
-        if (search != '') {
-            filteredBook = book.filter(i => i.title.toLowerCase().includes(search.toLowerCase()))
-
+        if (search !== '') {
+            filteredBook = book.filter(i => i.title.toLowerCase().includes(search.toLowerCase()) || i.author.toLowerCase().includes(search.toLowerCase()) )
         }
         const data = filteredBook.map((i, index) =>
             <div className="card" key={index}>
@@ -45,7 +45,7 @@ export default function Semuabuku() {
                 <Sidebar></Sidebar>
                 <div className="content">
                     <div className="filter">
-                        <input type="text" placeholder='Cari buku...' onChange={(e) => setSearch(e.target.value)} />
+                        <input type="text" placeholder='Cari judul atau penulis...' onChange={(e) => setSearch(e.target.value)} />
                         <select onChange={(e) => setFilter(e.target.value)}>
                             <option value="terbaru">Terbaru</option>
                             <option value="tersedia">Tersedia</option>
