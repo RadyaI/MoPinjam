@@ -6,5 +6,4 @@ export default function Protected({ Component }) {
     const [login, setLogin] = useState(Cookies.get('isLoggedIn') === 'true' || false)
 
     return login ? <Component /> : <Navigate to='/' replace />
-
 }

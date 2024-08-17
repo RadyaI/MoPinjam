@@ -200,7 +200,7 @@ export default function Navbar() {
                 <Title onClick={() => navigate('/')}>MoPinjam</Title>
                 <Group>
                     <Menu onClick={() => navigate('/buku')} >Semua Buku</Menu>
-                    {isAdmin === true && (<Menu onClick={() => navigate('/data/buku')} >Data Buku</Menu>)}
+                    {isAdmin === true && (<Menu onClick={() => navigate('/buku/data')} >Data Buku</Menu>)}
                     {isLogin === false && (<Button onClick={() => login()}>LOGIN</Button>)}
 
                     {isLogin === true && (<Button onClick={() => logout()}>LOGOUT</Button>)}
