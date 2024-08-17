@@ -33,11 +33,18 @@ export default function Dashboard() {
   }
 
   useEffect(() => {
-    const login = Cookies.get('isLoggedIn') === 'true' || false
-    const loginData = login ? JSON.parse(Cookies.get('loginData')).displayName : false
+    const development = import.meta.env.VITE_DEV === "true" || false
+    if (development) {
+      Cookies.set('isLoggedIn', true)
+      Cookies.set('LoginData', JSON.stringify({ displayName: 'Admin' }))
+    }
+
+    const login = Cookies.get('isLoggedIn') == 'true' || false
+    const loginData = login && Cookies.get('loginData') ? JSON.parse(Cookies.get('loginData')).displayName : false
     if (login) {
       setSambutan(`Halo ${loginData}`)
     }
+
   }, [])
 
   return (
