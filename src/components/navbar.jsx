@@ -60,7 +60,7 @@ const Button = styled.button`
 
 const Group = styled.div`
     margin-right:30px;
-    width:250px;
+    width:330px;
     display:flex;
     align-items:center;
     justify-content:space-around;
@@ -116,6 +116,9 @@ const NavMobile = styled.div`
 
 export default function Navbar() {
 
+    const [admin, setAdmin] = useState(['radyaiftikhar@gmail.com', 'radyaproject@gmail.com', 'rady61163@gmail.com'])
+    const [isAdmin, setIsAdmin] = useState(false)
+
     const [toggleNav, setToggleNav] = useState(false)
     const [toggleAlert, setToggleAlert] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -144,7 +147,7 @@ export default function Navbar() {
             const data = {
                 uid: user.user.uid,
                 displayName: user.user.displayName,
-                email: user.user.name,
+                email: user.user.email,
                 photoURL: user.user.photoURL
             }
             Cookies.set('loginData', JSON.stringify(data))
@@ -174,6 +177,12 @@ export default function Navbar() {
         }
     }
 
+    useEffect(() => {
+        const userEmail = isLogin ? JSON.parse(Cookies.get('loginData')).email : 'anonim'
+        const check = admin.includes(userEmail)
+        setIsAdmin(check)
+    }, [])
+
     return (
         <>
             {loading === true && (<Loader></Loader>)}
@@ -191,13 +200,14 @@ export default function Navbar() {
                 <Title onClick={() => navigate('/')}>MoPinjam</Title>
                 <Group>
                     <Menu onClick={() => navigate('/buku')} >Semua Buku</Menu>
+                    {isAdmin === true && (<Menu onClick={() => navigate('/data/buku')} >Data Buku</Menu>)}
                     {isLogin === false && (<Button onClick={() => login()}>LOGIN</Button>)}
 
                     {isLogin === true && (<Button onClick={() => logout()}>LOGOUT</Button>)}
                     <i className="bi bi-list" onClick={() => setToggleNav(!toggleNav)}></i>
                 </Group>
             </NavWrapper>
-            { toggleAlert === true && (<LoginDulu></LoginDulu>)}
+            {toggleAlert === true && (<LoginDulu></LoginDulu>)}
         </>
     )
 }
