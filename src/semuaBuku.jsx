@@ -2,29 +2,21 @@ import { useEffect, useState } from 'react'
 import './assets/semuabuku.css'
 import Navbar from './components/navbar'
 import Sidebar from './components/sidebar'
+import dataBuku from './db/databuku.json'
 
 export default function Semuabuku() {
 
     const [search, setSearch] = useState('')
     const [filter, setFilter] = useState('Terbaru')
 
-    const [book, setBook] = useState([
-        { author: 'Fulan', title: 'How to train your dragon' },
-        { author: 'Fulan', title: 'Naruto' },
-        { author: 'Fulan', title: 'Naruto' },
-        { author: 'Fulan', title: 'Naruto' },
-        { author: 'Fulan', title: 'Naruto' },
-        { author: 'Fulan', title: 'Naruto' },
-        { author: 'Fulan', title: 'Naruto' },
-        { author: 'Fulan', title: 'Naruto' },
-        { author: 'Radya', title: 'Wanpis' },
-    ])
+    const [book, setBook] = useState(dataBuku.Data);
+
 
     function BookList() {
 
         let filteredBook = book
         if (search !== '') {
-            filteredBook = book.filter(i => i.title.toLowerCase().includes(search.toLowerCase()) || i.author.toLowerCase().includes(search.toLowerCase()) )
+            filteredBook = book.filter(i => i.title.toLowerCase().includes(search.toLowerCase()) || i.author.toLowerCase().includes(search.toLowerCase()))
         }
         const data = filteredBook.map((i, index) =>
             <div className="card" key={index}>
@@ -37,6 +29,7 @@ export default function Semuabuku() {
         )
         return data
     }
+
 
     return (
         <>
