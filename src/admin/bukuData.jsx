@@ -75,6 +75,7 @@ const Menu = styled.div`
     padding:30px 40px;
     padding-top:60px;
     border-radius:5px;
+    border:1px solid #222831;
     display:flex;
     flex-direction:column;
     align-items:flex-start;
