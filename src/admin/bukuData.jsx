@@ -1,10 +1,58 @@
 import { useEffect, useState } from "react"
 import '../assets/crud.css'
+
 import Navbar from "../components/navbar"
+import ManageBuku from "../components/admin/manageBuku"
 
 import Cookies from "js-cookie"
 import { useNavigate } from "react-router-dom"
 import styled, { keyframes } from "styled-components"
+
+export default function BukuData() {
+  const [isLogin, setLogin] = useState(Cookies.get('isLoggedIn'))
+  const [admin, setAdmin] = useState(['radyaiftikhar@gmail.com', 'radyaproject@gmail.com', 'rady61163@gmail.com'])
+  const route = useNavigate()
+
+  const [toggleMenu, setToggleMenu] = useState(false)
+  const [onClose, setOnClose] = useState(false)
+  const [selected, setSelected] = useState('buku')
+
+  function closeMenu() {
+    setOnClose(true)
+    setTimeout(() => {
+      setOnClose(false)
+      setToggleMenu(false)
+    }, 300);
+  }
+
+  useEffect(() => {
+    const check = admin.includes(isLogin ? JSON.parse(Cookies.get('loginData')).email : 'anonim')
+    if (!check) {
+      route('/')
+    }
+  }, [])
+
+  return (
+    <>
+      <Navbar></Navbar>
+      {toggleMenu === true && (<Menu className={`${onClose === true ? 'hide' : ''}`}>
+        <i className="bi bi-x close" onClick={() => closeMenu()}></i>
+        <div className={`list ${selected === 'buku' ? "selected" : ''} `} onClick={() => setSelected('buku')} >Data Buku</div>
+        <div className={`list ${selected === 'user' ? "selected" : ''} `} onClick={() => setSelected('user')} >Data User</div>
+        <div className={`list ${selected === 'peminjaman' ? "selected" : ''} `} onClick={() => setSelected('peminjaman')} >Data Peminjaman</div>
+      </Menu>)}
+      <div className={`crud ${toggleMenu === true ? "blur" : ''}`}>
+        <div className="wrapper">
+          <i className="bi bi-list menu" onClick={() => setToggleMenu(true)}></i>
+          <div className="card">
+            {selected === 'buku' && (<ManageBuku></ManageBuku>)}
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
 
 const toggle = keyframes`
     from { opacity: 0; height: 0; }
@@ -64,46 +112,3 @@ const Menu = styled.div`
         color:white;
     }
 `
-
-export default function BukuData() {
-    const [isLogin, setLogin] = useState(Cookies.get('isLoggedIn'))
-    const [admin, setAdmin] = useState(['radyaiftikhar@gmail.com', 'radyaproject@gmail.com', 'rady61163@gmail.com'])
-    const route = useNavigate()
-
-    const [toggleMenu, setToggleMenu] = useState(false)
-    const [onClose, setOnClose] = useState(false)
-    const [selected, setSelected] = useState('buku')
-
-    function closeMenu() {
-        setOnClose(true)
-        setTimeout(() => {
-            setOnClose(false)
-            setToggleMenu(false)
-        }, 300);
-    }
-
-    useEffect(() => {
-        const check = admin.includes(isLogin ? JSON.parse(Cookies.get('loginData')).email : 'anonim')
-        if (!check) {
-            route('/')
-        }
-    }, [])
-
-    return (
-        <>
-            <Navbar></Navbar>
-            {toggleMenu === true && (<Menu className={`${onClose === true ? 'hide' : ''}`}>
-                <i className="bi bi-x close" onClick={() => closeMenu()}></i>
-                <div className={`list ${selected === 'buku' ? "selected" : ''} `} onClick={() => setSelected('buku')} >Data Buku</div>
-                <div className={`list ${selected === 'user' ? "selected" : ''} `} onClick={() => setSelected('user')} >Data User</div>
-                <div className={`list ${selected === 'peminjaman' ? "selected" : ''} `} onClick={() => setSelected('peminjaman')} >Data Peminjaman</div>
-            </Menu>)}
-            <div className={`crud ${toggleMenu === true ? "blur" : ''}`}>
-                <div className="wrapper">
-                    <i className="bi bi-list menu" onClick={() => setToggleMenu(true)}></i>
-                    <div className="card"></div>
-                </div>
-            </div>
-        </>
-    )
-}
