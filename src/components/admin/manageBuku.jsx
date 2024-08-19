@@ -13,7 +13,31 @@ export default function ManageBuku() {
             <option value="dipinjam">Dipinjam</option>
           </select>
         </Filter>
-        <TabelContainer></TabelContainer>
+        <TabelContainer>
+          <table>
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Nama</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Data 1</td>
+                <td>Data 2</td>
+                <td>Data 3</td>
+                <td>Data 3</td>
+                <td>
+                  <button className="btn-edit">Edit</button>
+                  <button className="btn-hapus">Hapus</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </TabelContainer>
       </Card>
     </>
   );
@@ -80,7 +104,58 @@ const Filter = styled.div`
 `;
 
 const TabelContainer = styled.div`
-  width:100p%;
-  height:80%;
-  border:1px solid red;
+  width: 100%;
+  height: 80%;
+  overflow-y: auto;
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+  }
+
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #222831;
+    color: white;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  tr:hover {
+    background-color: #ddd;
+  }
+
+  td {
+    border-bottom: 1px solid #ddd;
+  }
+
+  .btn-edit{
+    border:none;
+    border-radius:5px 0 0 5px;
+    padding:10px 15px;
+    background-color:#222831;
+    color:white;
+    cursor:pointer;
+  }
+  
+  .btn-hapus{
+    border:none;
+    border-radius:0 5px 5px 0;
+    padding:10px 15px;
+    background-color:#222831;
+    color:white;
+    cursor:pointer;
+  }
+
+  .btn-edit:hover, .btn-hapus:hover{
+    background-color:#2b2f36;
+  }
 `;
