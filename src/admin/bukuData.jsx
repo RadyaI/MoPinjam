@@ -7,9 +7,14 @@ import { useNavigate } from "react-router-dom"
 import styled, { keyframes } from "styled-components"
 
 const toggle = keyframes`
-  from { opacity: 0; height: 0; }
-  to { opacity: 1; height: 150px; }
+    from { opacity: 0; height: 0; }
+    to { opacity: 1; height: 150px; }
 `;
+
+const hide = keyframes`
+    from { opacity: 1; height: 150px; }
+    to { opacity: 0; height: 0; }
+`
 
 const Menu = styled.div`
     position:absolute;
@@ -28,6 +33,10 @@ const Menu = styled.div`
     justify-content:space-around;
     background-color:#efefef;
     animation:${toggle} 0.2s linear;
+
+    &.hide{
+        animation: ${hide} 0.4s linear;
+    }
 
     .close{
         position:absolute;
@@ -54,8 +63,6 @@ const Menu = styled.div`
         background-color:black;
         color:white;
     }
-
-
 `
 
 export default function BukuData() {
@@ -64,7 +71,16 @@ export default function BukuData() {
     const route = useNavigate()
 
     const [toggleMenu, setToggleMenu] = useState(false)
+    const [onClose, setOnClose] = useState(false)
     const [selected, setSelected] = useState('buku')
+
+    function closeMenu() {
+        setOnClose(true)
+        setTimeout(() => {
+            setOnClose(false)
+            setToggleMenu(false)
+        }, 300);
+    }
 
     useEffect(() => {
         const check = admin.includes(isLogin ? JSON.parse(Cookies.get('loginData')).email : 'anonim')
@@ -76,15 +92,15 @@ export default function BukuData() {
     return (
         <>
             <Navbar></Navbar>
-            {toggleMenu === true && (<Menu>
-                <i class="bi bi-x close" onClick={() => setToggleMenu(false)}></i>
+            {toggleMenu === true && (<Menu className={`${onClose === true ? 'hide' : ''}`}>
+                <i className="bi bi-x close" onClick={() => closeMenu()}></i>
                 <div className={`list ${selected === 'buku' ? "selected" : ''} `} onClick={() => setSelected('buku')} >Data Buku</div>
                 <div className={`list ${selected === 'user' ? "selected" : ''} `} onClick={() => setSelected('user')} >Data User</div>
                 <div className={`list ${selected === 'peminjaman' ? "selected" : ''} `} onClick={() => setSelected('peminjaman')} >Data Peminjaman</div>
             </Menu>)}
             <div className={`crud ${toggleMenu === true ? "blur" : ''}`}>
                 <div className="wrapper">
-                    <i class="bi bi-list menu" onClick={() => setToggleMenu(true)}></i>
+                    <i className="bi bi-list menu" onClick={() => setToggleMenu(true)}></i>
                     <div className="card"></div>
                 </div>
             </div>
