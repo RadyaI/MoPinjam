@@ -5,113 +5,13 @@ import styled, { keyframes } from "styled-components"
 import Cookies from 'js-cookie'
 import swal from "sweetalert"
 
-import { auth } from "../firebase"
+import { auth, db } from "../firebase"
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth"
+
+import {addDoc, getDocs, query, collection, where} from 'firebase/firestore'
 
 import Loader from "./loader"
 import LoginDulu from "./loginDulu"
-
-const NavWrapper = styled.div`
-    position:fixed;
-    height:80px;
-    width:100%;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    z-index: 2;
-
-    i{
-    font-size:45px;
-    margin-left:50px;
-    }
-
-    @media only screen and (min-width:700px){
-    i{
-    display:none;}
-    }
-    `
-
-const Title = styled.h1`
-    margin-left:40px;
-    color:#222831;
-    cursor:pointer;
-    `
-
-const Menu = styled.p`
-    cursor:pointer;
-
-    @media only screen and (max-width: 700px) {
-    display: none;
-    }
-    `
-
-const Button = styled.button`
-    border:none;
-    padding:10px 30px;
-    border-radius:5px;
-    font-weight:bold;
-    background-color:#222831;
-    color:white;
-    cursor:pointer;
-
-    @media only screen and (max-width:700px){
-    display:none;
-  }`
-
-const Group = styled.div`
-    margin-right:30px;
-    width:330px;
-    display:flex;
-    align-items:center;
-    justify-content:space-around;
-    }
-    `
-
-const slideIn = keyframes`
-    from{margin-left:-300px;}
-    to{margin-left:0px;}
-`
-
-const NavMobile = styled.div`
-    width:65%;
-    height:100vh;
-    background-color:#EEEEEE;
-    position:fixed;
-    z-index:9;
-    animation:${slideIn} 0.1s linear;
-    margin-left: 0px;
-
-    .card{
-    width:100%;
-    height:20%;
-    padding-top:50px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:space-around;
-    }
-
-    p{
-    border-bottom:1px solid black;
-    padding:0 0 5px 10px;
-    width:80%;
-    font-size:18px;
-    }
-
-    button{
-    border:none;
-    padding:10px 30px;
-    border-radius:5px;
-    font-weight:bold;
-    background-color:#222831;
-    color:white;
-    cursor:pointer;
-    }
-
-    @media only screen and (min-width:700px){
-    display:none;
-    }
-    `
 
 
 export default function Navbar() {
@@ -148,8 +48,15 @@ export default function Navbar() {
                 uid: user.user.uid,
                 displayName: user.user.displayName,
                 email: user.user.email,
-                photoURL: user.user.photoURL
+                photoURL: user.user.photoURL,
+                role: 'user'
             }
+
+            const checkNewUser = await getDocs(query(collection(db, 'users'), where('uid', '==', data.uid)))
+            if (checkNewUser.empty) {
+                await addDoc(collection(db, 'users'), data)
+            }
+
             Cookies.set('loginData', JSON.stringify(data))
             Cookies.set('isLoggedIn', true)
             location.reload()
@@ -211,3 +118,104 @@ export default function Navbar() {
         </>
     )
 }
+
+const NavWrapper = styled.div`
+    position:fixed;
+    height:80px;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    z-index: 2;
+
+    i{
+    font-size:45px;
+    margin-left:50px;
+    }
+
+    @media only screen and (min-width:700px){
+    i{
+    display:none;}
+    }
+    `
+
+const Title = styled.h1`
+    margin-left:40px;
+    color:#222831;
+    cursor:pointer;
+    `
+
+const Menu = styled.p`
+    cursor:pointer;
+
+    @media only screen and (max-width: 700px) {
+    display: none;
+    }
+    `
+
+const Button = styled.button`
+    border:none;
+    padding:10px 30px;
+    border-radius:5px;
+    font-weight:bold;
+    background-color:#222831;
+    color:white;
+    cursor:pointer;
+
+    @media only screen and (max-width:700px){
+    display:none;
+  }`
+
+const Group = styled.div`
+    margin-right:30px;
+    width:330px;
+    display:flex;
+    align-items:center;
+    justify-content:space-around;
+    `
+
+const slideIn = keyframes`
+    from{margin-left:-300px;}
+    to{margin-left:0px;}
+`
+
+const NavMobile = styled.div`
+    width:65%;
+    height:100vh;
+    background-color:#EEEEEE;
+    position:fixed;
+    z-index:9;
+    animation:${slideIn} 0.1s linear;
+    margin-left: 0px;
+
+    .card{
+    width:100%;
+    height:20%;
+    padding-top:50px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:space-around;
+    }
+
+    p{
+    border-bottom:1px solid black;
+    padding:0 0 5px 10px;
+    width:80%;
+    font-size:18px;
+    }
+
+    button{
+    border:none;
+    padding:10px 30px;
+    border-radius:5px;
+    font-weight:bold;
+    background-color:#222831;
+    color:white;
+    cursor:pointer;
+    }
+
+    @media only screen and (min-width:700px){
+    display:none;
+    }
+    `

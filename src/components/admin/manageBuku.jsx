@@ -1,11 +1,48 @@
-import styled from "styled-components";
+import { useState } from "react";
+import styled, { keyframes } from "styled-components";
 
 export default function ManageBuku() {
+
+  const [toggleCard, setToggleCard] = useState(false)
+  const [onCloseCard, setOnCloseCard] = useState(false)
+
+  function closeCard() {
+    setOnCloseCard(true)
+    setTimeout(() => {
+      setOnCloseCard(false)
+      setToggleCard(false)
+    }, 240);
+  }
+
   return (
     <>
-      <Card>
+      {toggleCard && (<Form className={`${onCloseCard ? 'close-animation' : ''}`} >
+        <div className="formCLose"><i className="bi bi-x-lg close-icon" onClick={() => closeCard()}></i></div>
+        <div className="formBody">
+
+          <div className="form-group">
+            <label htmlFor="nama" className="form-label">Nama: </label>
+            <input type="text" id="nama" className="form-input" placeholder="Masukkan Nama" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="email" className="form-label">Email: </label>
+            <input type="email" id="email" className="form-input" placeholder="example@gmail.com" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="role" className="form-label">Role: </label>
+            <select name="role" id="role" className="form-input">
+              <option value="user">User</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+
+        </div>
+        <div className="formSubmit"><button className="btn-submit">Submit</button></div>
+      </Form>)}
+      <Card className={`${toggleCard ? 'blur' : ''}`}>
         <Filter>
-          <button>Create</button>
+          {/* Manage user tidak butuh create button */}
+          {/* <button>Create</button> */}
           <input type="text" placeholder="Cari buku..." />
           <select>
             <option value="terbaru">Terbaru</option>
@@ -31,7 +68,7 @@ export default function ManageBuku() {
                 <td>Data 3</td>
                 <td>Data 3</td>
                 <td>
-                  <button className="btn-edit">Edit</button>
+                  <button className="btn-edit" onClick={() => setToggleCard(true)}>Edit</button>
                   <button className="btn-hapus">Hapus</button>
                 </td>
               </tr>
@@ -43,14 +80,48 @@ export default function ManageBuku() {
   );
 }
 
+const FormToggle = keyframes`
+  0%{ 
+    width:400px;
+    height:500px;
+  }
+  50%{
+    width:410px;
+    height:510px;
+  }
+  100%{
+    width:400px;
+    height:500px;
+  }
+`
+
+const closeAnimation = keyframes`
+  0%{ 
+    width:400px;
+    height:500px;
+  }
+  50%{
+    width:410px;
+    height:510px;
+  }
+  100%{
+    width:0px;
+    height:0px;
+  }
+`
+
 const Card = styled.div`
-  width:100p%;
+  width:100%;
   height:100%;
+
+  &.blur{
+    filter:blur(3px);
+  }
 `;
 
 const Filter = styled.div`
   // border:1px solid green; 
-  width:100p%;
+  width:100%;
   height:20%;
   display:flex;
   justify-content:space-around;
@@ -159,3 +230,89 @@ const TabelContainer = styled.div`
     background-color:#2b2f36;
   }
 `;
+
+const Form = styled.div`
+  width:400px;
+  height:500px;
+  background-color:#efefef;
+  position:absolute;
+  z-index:10;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  box-shadow:0.5px 0 1px 0px rgba(0, 0, 0, 0.5);
+  border-radius:10px;
+  animation:${FormToggle} 0.2s;
+
+  &.close-animation{
+    animation:${closeAnimation} 0.3s;
+  }
+
+  .formCLose{
+    width:100%;
+    height:15%;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+  }
+
+  .close-icon{
+    margin-right:20px;
+    font-size:30px;
+    cursor: pointer;
+  }
+
+  .formBody{
+    width:100%;
+    height:70%;
+    overflow-y:auto;
+  }
+  
+  .formBody::-webkit-scrollbar{
+    width:0px;
+  }
+  
+  .form-group{
+    width:90%;
+    height:20%;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-around;
+    align-items:flex-start;
+    margin:0 auto;
+    margin-bottom:15px;
+  }
+
+  .form-group .form-label{
+    font-weight:bold;
+  }
+
+  .form-group .form-input{
+    border:none;
+    outline:none;
+    width:90%;
+    height:35px;
+    padding:0 10px;
+    font-size:15px;
+    border-radius:5px;
+    background-color:white;
+  }
+
+  .formSubmit{
+    width:100%;
+    height:15%;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+  }
+
+  .btn-submit{
+    margin-right:20px;
+    border:none;
+    border-radius:5px;
+    padding:10px 25px;
+    background-color:#222831;
+    color:white;
+    cursor:pointer;
+  }
+`
