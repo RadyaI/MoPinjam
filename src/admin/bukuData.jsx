@@ -10,7 +10,6 @@ import styled, { keyframes } from "styled-components"
 
 export default function BukuData() {
   const [isLogin, setLogin] = useState(Cookies.get('isLoggedIn'))
-  const [admin, setAdmin] = useState(['radyaiftikhar@gmail.com', 'radyaproject@gmail.com', 'rady61163@gmail.com'])
   const route = useNavigate()
 
   const [toggleMenu, setToggleMenu] = useState(false)
@@ -26,7 +25,7 @@ export default function BukuData() {
   }
 
   useEffect(() => {
-    const check = admin.includes(isLogin ? JSON.parse(Cookies.get('loginData')).email : 'anonim')
+    const check = isLogin ? Cookies.get('role') === 'admin' || false : 'anonim'
     if (!check) {
       route('/')
     }

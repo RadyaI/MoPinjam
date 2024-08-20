@@ -8,7 +8,7 @@ import swal from "sweetalert"
 import { auth, db } from "../firebase"
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth"
 
-import {addDoc, getDocs, query, collection, where} from 'firebase/firestore'
+import { addDoc, getDocs, query, collection, where } from 'firebase/firestore'
 
 import Loader from "./loader"
 import LoginDulu from "./loginDulu"
@@ -16,7 +16,6 @@ import LoginDulu from "./loginDulu"
 
 export default function Navbar() {
 
-    const [admin, setAdmin] = useState(['radyaiftikhar@gmail.com', 'radyaproject@gmail.com', 'rady61163@gmail.com'])
     const [isAdmin, setIsAdmin] = useState(false)
 
     const [toggleNav, setToggleNav] = useState(false)
@@ -55,10 +54,17 @@ export default function Navbar() {
             const checkNewUser = await getDocs(query(collection(db, 'users'), where('uid', '==', data.uid)))
             if (checkNewUser.empty) {
                 await addDoc(collection(db, 'users'), data)
-            }
-
-            Cookies.set('loginData', JSON.stringify(data))
-            Cookies.set('isLoggedIn', true)
+                Cookies.set('loginData', JSON.stringify(data))
+                Cookies.set('role', data.role)
+                Cookies.set('isLoggedIn', true)
+            } else {
+                checkNewUser.forEach((userData) => {
+                    const dataExist = userData.data()
+                    Cookies.set('loginData', JSON.stringify(dataExist))
+                    Cookies.set('role', dataExist.role)
+                    Cookies.set('isLoggedIn', true)
+                })
+            }   
             location.reload()
         } catch (error) {
             console.log(error)
@@ -77,6 +83,7 @@ export default function Navbar() {
                 await signOut(auth)
                 Cookies.remove('isLoggedIn')
                 Cookies.remove('loginData')
+                Cookies.remove('role')
                 location.href = '/'
             }
         } catch (error) {
@@ -85,9 +92,8 @@ export default function Navbar() {
     }
 
     useEffect(() => {
-        const userEmail = isLogin ? JSON.parse(Cookies.get('loginData')).email : 'anonim'
-        const check = admin.includes(userEmail)
-        setIsAdmin(check)
+        const checkRole = Cookies.get('role') === "admin" || false
+        setIsAdmin(checkRole)
     }, [])
 
     return (
