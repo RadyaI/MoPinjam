@@ -8,7 +8,7 @@ import swal from "sweetalert"
 import { auth, db } from "../firebase"
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth"
 
-import { addDoc, getDocs, query, collection, where } from 'firebase/firestore'
+import { addDoc, getDocs, query, collection, where, Timestamp } from 'firebase/firestore'
 
 import Loader from "./loader"
 import LoginDulu from "./loginDulu"
@@ -48,7 +48,8 @@ export default function Navbar() {
                 displayName: user.user.displayName,
                 email: user.user.email,
                 photoURL: user.user.photoURL,
-                role: 'user'
+                role: 'user',
+                time: Timestamp.now().toMillis()
             }
 
             const checkNewUser = await getDocs(query(collection(db, 'users'), where('uid', '==', data.uid)))

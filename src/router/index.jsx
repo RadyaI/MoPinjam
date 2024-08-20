@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Dashboard from "../dashboard";
 import semuaBuku from '../semuaBuku';
-import BukuData from "../admin/bukuData";
+import Data from "../admin/data";
 
 import Protected from '../components/protectedRoute'
 import NotFound from '../components/404/notfound'
@@ -17,7 +17,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/buku/data',
-        Component: () => <Protected Component={BukuData} />
+        Component: () => <Protected Component={Data} />
     },
     {
         path: "*",

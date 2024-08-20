@@ -8,7 +8,7 @@ import Cookies from "js-cookie"
 import { useNavigate } from "react-router-dom"
 import styled, { keyframes } from "styled-components"
 
-export default function BukuData() {
+export default function Data() {
   const [isLogin, setLogin] = useState(Cookies.get('isLoggedIn'))
   const route = useNavigate()
 

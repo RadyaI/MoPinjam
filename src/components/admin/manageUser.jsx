@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { collection, doc, getDocs, orderBy, query, updateDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
+import { db } from "../../firebase";
 
 export default function ManageBuku() {
 
   const [toggleCard, setToggleCard] = useState(false)
   const [onCloseCard, setOnCloseCard] = useState(false)
+
+  const [search, setSearch] = useState('')
+  const [tabelLoading, setTabelLoading] = useState(false)
+
+  const [userData, setUserData] = useState([])
+  const [dataForm, setDataForm] = useState({})
+  const [newRole, setNewRole] = useState('')
 
   function closeCard() {
     setOnCloseCard(true)
@@ -14,6 +23,83 @@ export default function ManageBuku() {
     }, 240);
   }
 
+  function getOneUser(id) {
+    const data = userData.filter(i => i.id === id)
+    setDataForm(data)
+  }
+
+  async function getUser() {
+    try {
+      setTabelLoading(true)
+      const get = await getDocs(query(collection(db, 'users'), orderBy('time', 'asc')))
+      const tempData = []
+      get.forEach((data) => {
+        const user = data.data()
+        tempData.push({ ...user, id: data.id })
+      })
+      setUserData(tempData)
+      setTabelLoading(false)
+    } catch (error) {
+      console.log(error)
+      setTabelLoading(false)
+    }
+  }
+
+  function DisplayUser() {
+    let filteredData = userData;
+
+    if (search !== '') {
+      filteredData = filteredData.filter(i =>
+        i.displayName.toLowerCase().includes(search.toLowerCase()) || i.email.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
+    const user = filteredData.map((i, no) =>
+      <tr key={no}>
+        <td>{no + 1}</td>
+        <td>{i.displayName}</td>
+        <td>{i.email}</td>
+        <td>{i.role}</td>
+        <td>
+          <button className="btn-edit" onClick={() => { setToggleCard(true); getOneUser(i.id); }}>Edit</button>
+          <button className="btn-hapus">Hapus</button>
+        </td>
+      </tr>
+    );
+
+    return user;
+  }
+
+  async function updateRole(id) {
+    try {
+      const alert = await swal({
+        icon: 'warning',
+        title: 'Yakin ingin mengubah data?',
+        dangerMode: true,
+        buttons: ['Tidak', 'Iya']
+      })
+      if (alert) {
+        const refData = doc(db, 'users', id)
+        await updateDoc(refData, {
+          role: newRole
+        })
+        closeCard()
+        swal({
+          icon: 'success',
+          button: false,
+          timer: 700
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+  useEffect(() => {
+    getUser()
+  }, [])
+
   return (
     <>
       {toggleCard && (<Form className={`${onCloseCard ? 'close-animation' : ''}`} >
@@ -22,33 +108,34 @@ export default function ManageBuku() {
 
           <div className="form-group">
             <label htmlFor="nama" className="form-label">Nama: </label>
-            <input type="text" id="nama" className="form-input" placeholder="Masukkan Nama" />
+            <input type="text" id="nama" className="form-input" placeholder="Masukkan Nama" readOnly value={dataForm[0].displayName} />
           </div>
           <div className="form-group">
             <label htmlFor="email" className="form-label">Email: </label>
-            <input type="email" id="email" className="form-input" placeholder="example@gmail.com" />
+            <input type="email" id="email" className="form-input" placeholder="example@gmail.com" readOnly value={dataForm[0].email} />
           </div>
           <div className="form-group">
-            <label htmlFor="role" className="form-label">Role: </label>
-            <select name="role" id="role" className="form-input">
+            <label htmlFor="role" className="form-label">Role: (<b>{dataForm[0].role}</b>) </label>
+            <select name="role" id="role" className="form-input" onChange={(e) => setNewRole(e.target.value)}>
+              <option value="-">-</option>
               <option value="user">User</option>
-              <option value="Admin">Admin</option>
+              <option value="admin">Admin</option>
             </select>
           </div>
 
         </div>
-        <div className="formSubmit"><button className="btn-submit">Submit</button></div>
+        <div className="formSubmit"><button className="btn-submit" onClick={() => updateRole(dataForm[0].id)}>Submit</button></div>
       </Form>)}
       <Card className={`${toggleCard ? 'blur' : ''}`}>
         <Filter>
           {/* Manage user tidak butuh create button */}
           {/* <button>Create</button> */}
-          <input type="text" placeholder="Cari buku..." />
-          <select>
+          <input type="text" placeholder="Cari user atau email..." onChange={(e) => setSearch(e.target.value)} />
+          {/* <select>
             <option value="terbaru">Terbaru</option>
             <option value="tersedia">Tersedia</option>
             <option value="dipinjam">Dipinjam</option>
-          </select>
+          </select> */}
         </Filter>
         <TabelContainer>
           <table>
@@ -62,16 +149,14 @@ export default function ManageBuku() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Data 1</td>
-                <td>Data 2</td>
-                <td>Data 3</td>
-                <td>Data 3</td>
-                <td>
-                  <button className="btn-edit" onClick={() => setToggleCard(true)}>Edit</button>
-                  <button className="btn-hapus">Hapus</button>
-                </td>
-              </tr>
+              {tabelLoading && (<tr>
+                <td>Loading</td>
+                <td>Loading</td>
+                <td>Loading</td>
+                <td>Loading</td>
+                <td>Loading</td>
+              </tr>)}
+              <DisplayUser></DisplayUser>
             </tbody>
           </table>
         </TabelContainer>
