@@ -16,7 +16,7 @@ export default function Data() {
 
   const [toggleMenu, setToggleMenu] = useState(false)
   const [onClose, setOnClose] = useState(false)
-  const [selected, setSelected] = useState('user')
+  const [selected, setSelected] = useState('buku')
 
   function closeMenu() {
     setOnClose(true)

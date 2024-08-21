@@ -32,7 +32,6 @@ export default function ManageBuku() {
   async function getUser() {
     try {
       setTabelLoading(true)
-      console.log('Menampilkan Loading')
       const get = await getDocs(query(collection(db, 'users'), orderBy('time', 'asc')))
       const tempData = []
       get.forEach((data) => {
@@ -40,7 +39,6 @@ export default function ManageBuku() {
         tempData.push({ ...user, id: data.id })
       })
       setTabelLoading(false)
-      console.log('Menghapus Loading')
       setUserData(tempData)
     } catch (error) {
       console.log(error)
