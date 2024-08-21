@@ -57,7 +57,8 @@ export default function ManageBuku() {
                 <td>{no + 1}</td>
                 <td>{i.judul}</td>
                 <td>{i.penulis}</td>
-                <td><img src={i.gambar} alt={i.judul} width="160" height="200" /></td>
+                <td>{i.bahasa}</td>
+                <td><img src={i.gambar} alt={i.judul} width="160" height="200" loading="lazy" /></td>
                 <td>
                     <button className="btn-edit" onClick={() => { setToggleCard(true); getOneBuku(i.id); setTypeForm('edit') }}>Edit</button>
                     <button className="btn-hapus" onClick={() => deletebuku(i.id)}>Hapus</button>
@@ -130,6 +131,10 @@ export default function ManageBuku() {
         } catch (error) {
             console.log(error)
         }
+    }
+
+    async function updateBuku(id) {
+        console.log(id)
     }
 
     useEffect(() => {
@@ -217,7 +222,7 @@ export default function ManageBuku() {
                 </div>
                 <div className="formSubmit">
                     { typeForm === 'create' && (<button className="btn-submit" onClick={() => postBuku()}>Create</button>)}
-                    { typeForm === 'edit' && (<button className="btn-submit" onClick={() => updateBuku()}>Update</button>)}
+                    { typeForm === 'edit' && (<button className="btn-submit" onClick={() => updateBuku(dataForm.id)}>Update</button>)}
                 </div>
             </Form>)}
             <Card className={`${toggleCard ? 'blur' : ''}`}>
@@ -238,12 +243,14 @@ export default function ManageBuku() {
                                 <th>No</th>
                                 <th>Judul</th>
                                 <th>Penulis</th>
+                                <th>Bahasa</th>
                                 <th>Gambar</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             {tabelLoading && (<tr>
+                                <td>Loading</td>
                                 <td>Loading</td>
                                 <td>Loading</td>
                                 <td>Loading</td>
@@ -355,9 +362,10 @@ const Filter = styled.div`
 `;
 
 const TabelContainer = styled.div`
-  width: 100%;
+  width: 95%;
   height: 80%;
   overflow-y: auto;
+  margin:0 auto;
   
   table {
     width: 100%;

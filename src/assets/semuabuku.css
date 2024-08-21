@@ -74,13 +74,9 @@
 .content .buku-data .card .img-cover{
     width: 100%;
     height: 70%;
+    display: flex;
+    justify-content: center;
   }
-
-.content .buku-data .card .img-cover img{
-  object-fit: contain;
-  width: 100%;
-  height: 100%;
-}
 
 .content .buku-data .card .desc{
     width: 100%;
