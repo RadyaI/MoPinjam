@@ -3,6 +3,8 @@ import '../assets/crud.css'
 
 import Navbar from "../components/navbar"
 import ManageUser from "../components/admin/manageUser"
+import ManageBuku from "../components/admin/manageBuku"
+import Peminjaman from "../components/admin/peminjaman"
 
 import Cookies from "js-cookie"
 import { useNavigate } from "react-router-dom"
@@ -45,6 +47,8 @@ export default function Data() {
           <i className="bi bi-list menu" onClick={() => setToggleMenu(true)}></i>
           <div className="card">
             {selected === 'user' && (<ManageUser></ManageUser>)}
+            {selected === 'buku' && (<ManageBuku></ManageBuku>)}
+            {selected === 'peminjaman' && (<Peminjaman></Peminjaman>)}
           </div>
         </div>
       </div>

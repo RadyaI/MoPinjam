@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, orderBy, query, updateDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, onSnapshot, orderBy, query, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { db } from "../../firebase";
@@ -14,6 +14,7 @@ export default function ManageBuku() {
   const [userData, setUserData] = useState([])
   const [dataForm, setDataForm] = useState({})
   const [newRole, setNewRole] = useState('')
+  const [roleUpdated, setRoleUpdated] = useState(false)
 
   function closeCard() {
     setOnCloseCard(true)
@@ -31,14 +32,16 @@ export default function ManageBuku() {
   async function getUser() {
     try {
       setTabelLoading(true)
+      console.log('Menampilkan Loading')
       const get = await getDocs(query(collection(db, 'users'), orderBy('time', 'asc')))
       const tempData = []
       get.forEach((data) => {
         const user = data.data()
         tempData.push({ ...user, id: data.id })
       })
-      setUserData(tempData)
       setTabelLoading(false)
+      console.log('Menghapus Loading')
+      setUserData(tempData)
     } catch (error) {
       console.log(error)
       setTabelLoading(false)
@@ -62,7 +65,7 @@ export default function ManageBuku() {
         <td>{i.role}</td>
         <td>
           <button className="btn-edit" onClick={() => { setToggleCard(true); getOneUser(i.id); }}>Edit</button>
-          <button className="btn-hapus">Hapus</button>
+          <button className="btn-hapus" onClick={() => deleteUser(i.id)}>Hapus</button>
         </td>
       </tr>
     );
@@ -84,6 +87,7 @@ export default function ManageBuku() {
           role: newRole
         })
         closeCard()
+        setRoleUpdated((prev) => !prev)
         swal({
           icon: 'success',
           button: false,
@@ -95,10 +99,37 @@ export default function ManageBuku() {
     }
   }
 
+  async function deleteUser(id) {
+    try {
+      const alert = await swal({
+        icon: 'warning',
+        title: 'Ingin menghapus user ini?',
+        buttons: ['Tidak', 'Iya'],
+        dangerMode: true
+      })
+
+      if (alert) {
+        const refData = doc(db, 'users', id)
+        await deleteDoc(refData)
+        const remove = userData.filter(i => i.id !== id)
+        setUserData(remove)
+        swal({
+          icon: 'success',
+          title: false,
+          buttons: false,
+          timer: 1000
+        })
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
 
   useEffect(() => {
     getUser()
-  }, [])
+  }, [roleUpdated])
 
   return (
     <>
