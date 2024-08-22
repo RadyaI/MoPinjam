@@ -127,11 +127,12 @@ body::-webkit-scrollbar{
 .data .card-container .card .img-cover{
   width: 100%;
   height: 70%;
+  display: flex;
+  justify-content: center;
 }
 
 .data .card-container .card .img-cover img{
-  object-fit: contain;
-  width: 100%;
+  width: 90%;
   height: 100%;
 }
 

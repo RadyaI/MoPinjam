@@ -134,7 +134,10 @@ export default function ManageBuku() {
     }
 
     async function updateBuku(id) {
-        console.log(id)
+        const gambar = dataForm.gambar
+        // cek ada gambar ato ga di variabel file if (file) {do something}
+        // kalo ada gambar upload
+        // Lanjut besok ja lah cape kang
     }
 
     useEffect(() => {
@@ -221,14 +224,14 @@ export default function ManageBuku() {
                     </div>
                 </div>
                 <div className="formSubmit">
-                    { typeForm === 'create' && (<button className="btn-submit" onClick={() => postBuku()}>Create</button>)}
-                    { typeForm === 'edit' && (<button className="btn-submit" onClick={() => updateBuku(dataForm.id)}>Update</button>)}
+                    {typeForm === 'create' && (<button className="btn-submit" onClick={() => postBuku()}>Create</button>)}
+                    {typeForm === 'edit' && (<button className="btn-submit" onClick={() => updateBuku(dataForm.id)}>Update</button>)}
                 </div>
             </Form>)}
             <Card className={`${toggleCard ? 'blur' : ''}`}>
                 <Filter>
                     {/* Manage user tidak butuh create button */}
-                    <button onClick={() => {setToggleCard(true); setTypeForm('create')}}>Create</button>
+                    <button onClick={() => { setToggleCard(true); setTypeForm('create') }}>Create</button>
                     <input type="text" placeholder="Cari buku atau penulis..." onChange={(e) => setSearch(e.target.value)} />
                     <select>
                         <option value="terbaru">Terbaru</option>
