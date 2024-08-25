@@ -5,7 +5,7 @@ import styled, { keyframes } from "styled-components"
 import Cookies from 'js-cookie'
 import swal from "sweetalert"
 
-import { auth, db } from "../firebase"
+import { auth, db } from "../config/firebase"
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth"
 
 import { addDoc, getDocs, query, collection, where, Timestamp } from 'firebase/firestore'

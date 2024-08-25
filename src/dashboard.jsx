@@ -4,11 +4,13 @@ import Cookies from 'js-cookie'
 import './assets/dashboard.css'
 import Navbar from './components/navbar'
 import { collection, getDocs, query } from 'firebase/firestore'
-import { db } from './firebase'
+import { db } from './config/firebase'
+import { useNavigate } from 'react-router-dom'
 
 
 export default function Dashboard() {
 
+  const route = useNavigate()
   const [search, setsearch] = useState(false)
   const [buttonText, setButtonText] = useState('CARI')
 
@@ -47,12 +49,16 @@ export default function Dashboard() {
     }
   }
 
+  function goToDetail(judul) {
+    route(`buku/d/${judul}`)
+  }
+
   function DisplayBuku() {
     try {
       const data = bukuData.filter(i => i.judul.toLowerCase().includes(input.toLowerCase()) || i.penulis.toLowerCase().includes(input.toLowerCase()))
 
       const card = data.map((i, index) =>
-        <div className="card" key={index}>
+        <div className="card" key={index} onClick={() => goToDetail(i.judul)}>
           <div className="img-cover"><img loading='lazy' src={i.gambar} alt="Buku" /></div>
           <div className="desc">
             <div className="author"><small>{i.penulis}</small></div>

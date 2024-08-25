@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { addDoc, collection, deleteDoc, doc, getDoc, onSnapshot, orderBy, query, Timestamp, updateDoc } from "firebase/firestore";
 
-import { db, storage } from "../../firebase";
+import { db, storage } from "../../config/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export default function ManageBuku() {

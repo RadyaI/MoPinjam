@@ -4,7 +4,7 @@ import Navbar from './components/navbar'
 import Sidebar from './components/sidebar'
 import dataBuku from './db/databuku.json'
 import { collection, getDocs, orderBy, query } from 'firebase/firestore'
-import { db } from './firebase'
+import { db } from './config/firebase'
 
 export default function Semuabuku() {
 
