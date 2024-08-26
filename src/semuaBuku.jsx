@@ -16,6 +16,10 @@ export default function Semuabuku() {
     const route = useNavigate()
     const [search, setSearch] = useState('')
     const [filter, setFilter] = useState('Terbaru')
+    const [sidebarFilter, setSidebarFilter] = useState({
+        basicFilter: '',
+        selectedOption: ''
+    })
 
     const [book, setBook] = useState([]);
 
@@ -35,6 +39,19 @@ export default function Semuabuku() {
         if (search !== '') {
             filteredBook = book.filter(i => i.judul.toLowerCase().includes(search.toLowerCase()) || i.penulis.toLowerCase().includes(search.toLowerCase()))
         }
+
+        if(sidebarFilter.selectedOption === 'tersedia'){
+            filteredBook = book.filter(i => i.dipinjam === false)
+        }
+
+
+        if (sidebarFilter.basicFilter === 'terbaru') {
+            filteredBook = book.sort((a, b) => b.time - a.time)
+        } else if (sidebarFilter.basicFilter === 'popular') {
+            filteredBook = book.sort((a, b) => b.jumlah_dipinjam - a.jumlah_dipinjam)
+        }
+
+
         const data = filteredBook.map((i, index) =>
             <div className="card" key={index} onClick={() => goToDetail(i.judul)}>
                 <div className="img-cover"><img loading='lazy' width="160" height="200" src={i.gambar} alt="Buku" /></div>
@@ -49,7 +66,7 @@ export default function Semuabuku() {
 
     async function getBuku() {
         try {
-            const get = await getDocs(query(collection(db, 'buku'), orderBy('time', 'asc')))
+            const get = await getDocs(query(collection(db, 'buku'), orderBy('time', 'desc')))
             let tempData = []
             get.forEach((data) => {
                 tempData.push({ ...data.data(), id: data.id })
@@ -58,6 +75,10 @@ export default function Semuabuku() {
         } catch (error) {
             console.log(error)
         }
+    }
+
+    function handleValue(value) {
+        setSidebarFilter(value)
     }
 
     useEffect(() => {
@@ -69,7 +90,7 @@ export default function Semuabuku() {
             {isLoading && (<Loader></Loader>)}
             <Navbar></Navbar>
             <div className="buku-container">
-                <Sidebar></Sidebar>
+                <Sidebar value={handleValue}></Sidebar>
                 <div className="content">
                     <div className="filter">
                         <input type="text" placeholder='Cari judul atau penulis...' onChange={(e) => setSearch(e.target.value)} />
