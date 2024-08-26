@@ -1,18 +1,33 @@
 import { useEffect, useState } from 'react'
+
 import './assets/semuabuku.css'
+import Loader from './components/loader'
 import Navbar from './components/navbar'
 import Sidebar from './components/sidebar'
 import dataBuku from './db/databuku.json'
+
 import { collection, getDocs, orderBy, query } from 'firebase/firestore'
 import { db } from './config/firebase'
 
+import { useNavigate } from 'react-router-dom'
+
 export default function Semuabuku() {
 
+    const route = useNavigate()
     const [search, setSearch] = useState('')
     const [filter, setFilter] = useState('Terbaru')
 
     const [book, setBook] = useState([]);
 
+    const [isLoading, setIsLoading] = useState(false)
+
+    function goToDetail(judul) {
+        setIsLoading(true)
+        setTimeout(() => {
+            setIsLoading(false)
+            route(`/buku/d/${judul}`)
+        }, 600);
+    }
 
     function BookList() {
 
@@ -21,7 +36,7 @@ export default function Semuabuku() {
             filteredBook = book.filter(i => i.judul.toLowerCase().includes(search.toLowerCase()) || i.penulis.toLowerCase().includes(search.toLowerCase()))
         }
         const data = filteredBook.map((i, index) =>
-            <div className="card" key={index}>
+            <div className="card" key={index} onClick={() => goToDetail(i.judul)}>
                 <div className="img-cover"><img loading='lazy' width="160" height="200" src={i.gambar} alt="Buku" /></div>
                 <div className="desc">
                     <div className="author"><small>{i.penulis}</small></div>
@@ -51,6 +66,7 @@ export default function Semuabuku() {
 
     return (
         <>
+            {isLoading && (<Loader></Loader>)}
             <Navbar></Navbar>
             <div className="buku-container">
                 <Sidebar></Sidebar>

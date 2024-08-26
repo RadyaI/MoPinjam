@@ -131,6 +131,14 @@
     .content .buku-data .card{
         margin: 0 auto;
         width: 150px;
-        height: 220px;
+        height: auto;
+    }
+
+    .content .buku-data .card:nth-last-child(1){
+        margin-bottom: 0px;
+    }
+
+    .content .buku-data .card .desc{
+        margin-top: 10px;
     }
 }

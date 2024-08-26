@@ -25,7 +25,7 @@ export default function Navbar() {
     const route = useNavigate()
 
     function navigate(params) {
-        if (!isLogin) {
+        if (!isLogin && params != '/') {
             setToggleAlert(true)
             setTimeout(() => {
                 setToggleAlert(false)

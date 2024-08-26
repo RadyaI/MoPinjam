@@ -3,14 +3,17 @@ import Cookies from 'js-cookie'
 
 import './assets/dashboard.css'
 import Navbar from './components/navbar'
-import { collection, getDocs, query } from 'firebase/firestore'
+import Loader from './components/loader'
+
 import { db } from './config/firebase'
+import { collection, getDocs, query } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
 
 
 export default function Dashboard() {
 
   const route = useNavigate()
+  const [loading, setLoading] = useState(false)
   const [search, setsearch] = useState(false)
   const [buttonText, setButtonText] = useState('CARI')
 
@@ -50,7 +53,11 @@ export default function Dashboard() {
   }
 
   function goToDetail(judul) {
-    route(`buku/d/${judul}`)
+    setLoading(true)
+    setTimeout(() => {
+      route(`buku/d/${judul}`)
+      setLoading(false)
+    }, 600);
   }
 
   function DisplayBuku() {
@@ -104,6 +111,7 @@ export default function Dashboard() {
 
   return (
     <>
+      {loading === true && (<Loader></Loader>)}
       <Navbar />
       <div className={`home ${search ? 'home-animate' : ''}`}>
         <div className="circle"></div>
