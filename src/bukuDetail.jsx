@@ -1,9 +1,11 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
 
 import Navbar from "./components/navbar"
 import Loader from "./components/loader"
+import { collection, doc, getDocs, query, where } from "firebase/firestore"
+import { db } from "./config/firebase"
 
 export default function BukuDetail() {
 
@@ -11,6 +13,7 @@ export default function BukuDetail() {
     const { judul } = useParams()
 
     const [loading, setLoading] = useState(false)
+    const [bukuData, setBukuData] = useState({})
 
     function navigation(params) {
         setLoading(true)
@@ -20,6 +23,23 @@ export default function BukuDetail() {
         }, 600);
     }
 
+    async function getBukuDetail() {
+        try {
+            const get = await getDocs(query(collection(db, 'buku'), where('judul', '==', judul)))
+            const tempData = []
+            get.forEach((data) => {
+                tempData.push({ ...data.data(), id: data.id })
+            })
+            setBukuData(tempData[0])
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getBukuDetail()
+    }, [])
+
     return (
         <>
             {loading && (<Loader></Loader>)}
@@ -28,15 +48,15 @@ export default function BukuDetail() {
                 <Card>
                     <Cover>
                         <div className="img-container">
-                            <img src="https://edit.org/images/cat/book-covers-big-2019101610.jpg" alt="foto buku" />
+                            <img src={bukuData.gambar} alt="foto buku" />
                         </div>
                     </Cover>
                     <DetailBuku>
                         <div className="breadcrumb"><small><span onClick={() => navigation('/')}>Home</span> / <span onClick={() => navigation('/buku')}>Buku</span> / <span className="judul">{judul}</span></small></div>
                         <Title>
                             <div className="head">
-                                <div className="penulis">Oxford University Press</div>
-                                <div className="judul">Oxford English Dictionary For Schools</div>
+                                <div className="penulis">{bukuData.penulis}</div>
+                                <div className="judul">{bukuData.judul}</div>
                             </div>
                             <div className="share"><i className="bi bi-share-fill share-icon"></i></div>
                         </Title>
@@ -44,23 +64,34 @@ export default function BukuDetail() {
                             Deskripsi Buku
                         </div>
                         <Desc>
-                            The Oxford English Dictionary for Schools is easy to use with clear signposting, accessible design, and expertly levelled definitions and examples, making it the perfect language resource for school work and studying at home.
+                        {bukuData.deskripsi}
                         </Desc>
                         <div className="judul_section2">
                             Detail
                         </div>
                         <Detail>
                             <div className="info">
-                                <div className="info1">Jumlah Halaman: 299</div>
-                                <div className="info2">Bahasa: Indonesia</div>
+                                <div className="info1">Jumlah Halaman: {bukuData.jumlah_halaman}</div>
+                                <div className="info2">Bahasa: {bukuData.bahasa}</div>
                             </div>
                             <div className="info">
-                                <div className="info1">Penulis: Muhammad Radya</div>
-                                <div className="info2">Status: Tersedia</div>
+                                <div className="info1">Penulis: {bukuData.penulis}</div>
+                                { bukuData.dipinjam === false && (<div className="info2">Status: <span className="badge-success">Tersedia</span></div>)}
+                                { bukuData.dipinjam && (<div className="info2">Status: <span className="badge-danger">Tidak tersedia</span></div>)}
                             </div>
                         </Detail>
                     </DetailBuku>
-                    <Pinjam></Pinjam>
+                    <Pinjam>
+                        <div className="card">
+                            <div className="title">Ingin pinjam buku ini ?</div>
+                            <div className="form">
+                                <label htmlFor="deadline">Pinjam sampai hari?</label>
+                                { bukuData.dipinjam && (<input id="deadline" type="date" disabled />)}
+                                { bukuData.dipinjam === false && (<input id="deadline" type="date" />)}
+                            </div>
+                            { bukuData.dipinjam === false && (<button className="btn-pinjam">Pinjam</button>)}
+                        </div>
+                    </Pinjam>
                 </Card>
             </Container>
         </>
@@ -77,7 +108,7 @@ const Container = styled.div`
 `
 
 const Card = styled.div`
-    margin-top:30px;
+    margin-top:65px;
     width:90%;
     height:80%;
     display:flex;
@@ -215,12 +246,80 @@ const Detail = styled.div`
     .info .info2{
         margin-top: 20px;
     }
+
+    .badge-success{
+        border-radius: 7px;
+        padding: 3px 5px;
+        background-color: green;
+        color: white;
+    }
+
+    .badge-danger{
+        border-radius: 7px;
+        padding: 3px 5px;
+        background-color: red;
+        color: white;
+    }
 `
 
 const Pinjam = styled.div`
-    border: 1px solid black;
     width:30%;
     height:100%;
+
+    .card{
+        background-color: #ffffff;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 4px 0 rgba(193, 193, 193, 0.1);
+        border-radius: 10px;
+        width: 85%;
+        height: 200px;
+        padding: 10px;
+        margin: 0 auto;
+        margin-top: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: space-around;
+    }
+
+    .card .title{
+        font-weight: bold;
+        margin-top: 10px;
+        color: grey;
+    }
+
+    .card .form{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: flex-start;
+        width: 100%;
+        height: 40%;
+    }
+
+    .card .form label {
+        font-weight: bold;
+    }
+
+    .card .form input{
+        width: 90%;
+        height: 30px;
+        padding: 5px;
+        border-radius: 10px;
+        background-color: #efefef;
+        outline: none;
+        border: none;
+    }
+
+    .btn-pinjam{
+        border: none;
+        border-radius: 10px;
+        background-color: #222831;
+        color: white;
+        font-weight: bold;
+        padding: 10px 23px;
+        margin: 0 auto;
+        cursor: pointer;
+    }
 
     @media only screen and (max-width:700px){
         width:100%;
