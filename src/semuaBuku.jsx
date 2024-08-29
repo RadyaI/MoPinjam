@@ -4,6 +4,7 @@ import './assets/semuabuku.css'
 import Loader from './components/loader'
 import Navbar from './components/navbar'
 import Sidebar from './components/sidebar'
+import Float from './components/protected/float'
 import dataBuku from './db/databuku.json'
 
 import { collection, getDocs, orderBy, query } from 'firebase/firestore'
@@ -89,6 +90,7 @@ export default function Semuabuku() {
         <>
             {isLoading && (<Loader></Loader>)}
             <Navbar></Navbar>
+            <Float></Float>
             <div className="buku-container">
                 <Sidebar value={handleValue}></Sidebar>
                 <div className="content">

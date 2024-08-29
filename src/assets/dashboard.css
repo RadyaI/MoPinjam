@@ -13,10 +13,10 @@ body::-webkit-scrollbar{
   width: 250px;
   height: 250px;
   position: fixed;
-  z-index: 999999;
-  right: 0;
+  z-index: 9;
+  left: 0;
   bottom: 0;
-  margin-right: -100px;
+  margin-left: -100px;
   margin-bottom: -105px;
   border-radius: 50%;
   filter: blur(50px);

@@ -4,7 +4,9 @@ import styled from "styled-components"
 
 import Navbar from "./components/navbar"
 import Loader from "./components/loader"
-import { collection, doc, getDocs, query, where } from "firebase/firestore"
+import Float from "./components/protected/float"
+
+import { collection, getDocs, query, where } from "firebase/firestore"
 import { db } from "./config/firebase"
 
 export default function BukuDetail() {
@@ -44,6 +46,7 @@ export default function BukuDetail() {
         <>
             {loading && (<Loader></Loader>)}
             <Navbar></Navbar>
+            <Float></Float>
             <Container>
                 <Card>
                     <Cover>
@@ -64,7 +67,7 @@ export default function BukuDetail() {
                             Deskripsi Buku
                         </div>
                         <Desc>
-                        {bukuData.deskripsi}
+                            {bukuData.deskripsi}
                         </Desc>
                         <div className="judul_section2">
                             Detail
@@ -76,8 +79,8 @@ export default function BukuDetail() {
                             </div>
                             <div className="info">
                                 <div className="info1">Penulis: {bukuData.penulis}</div>
-                                { bukuData.dipinjam === false && (<div className="info2">Status: <span className="badge-success">Tersedia</span></div>)}
-                                { bukuData.dipinjam && (<div className="info2">Status: <span className="badge-danger">Tidak tersedia</span></div>)}
+                                {bukuData.dipinjam === false && (<div className="info2">Status: <span className="badge-success">Tersedia</span></div>)}
+                                {bukuData.dipinjam && (<div className="info2">Status: <span className="badge-danger">Tidak tersedia</span></div>)}
                             </div>
                         </Detail>
                     </DetailBuku>
@@ -86,10 +89,10 @@ export default function BukuDetail() {
                             <div className="title">Ingin pinjam buku ini ?</div>
                             <div className="form">
                                 <label htmlFor="deadline">Pinjam sampai hari?</label>
-                                { bukuData.dipinjam && (<input id="deadline" type="date" disabled />)}
-                                { bukuData.dipinjam === false && (<input id="deadline" type="date" />)}
+                                {bukuData.dipinjam && (<input id="deadline" type="date" disabled />)}
+                                {bukuData.dipinjam === false && (<input id="deadline" type="date" />)}
                             </div>
-                            { bukuData.dipinjam === false && (<button className="btn-pinjam">Pinjam</button>)}
+                            {bukuData.dipinjam === false && (<button className="btn-pinjam">Pinjam</button>)}
                         </div>
                     </Pinjam>
                 </Card>
@@ -144,6 +147,12 @@ const Cover = styled.div`
 
     @media only screen and (max-width:700px){
         width:100%;
+
+        .img-container{
+            width: 70%;
+            height: auto;
+            margin: 0 auto;
+        }
     }
 `
 const DetailBuku = styled.div`

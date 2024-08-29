@@ -4,6 +4,7 @@ import Cookies from 'js-cookie'
 import './assets/dashboard.css'
 import Navbar from './components/navbar'
 import Loader from './components/loader'
+import Float from './components/protected/float'
 
 import { db } from './config/firebase'
 import { collection, getDocs, query } from 'firebase/firestore'
@@ -113,8 +114,9 @@ export default function Dashboard() {
     <>
       {loading === true && (<Loader></Loader>)}
       <Navbar />
+      <Float></Float>
       <div className={`home ${search ? 'home-animate' : ''}`}>
-        <div className="circle"></div>
+        {/* <div className="circle"></div> */}
         <div className={`card ${search ? 'card-animate' : ''}`}>
           <h2>{sambutan}</h2>
           <div className="search">
