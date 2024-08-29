@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
+import swal from "sweetalert"
 
 import Navbar from "./components/navbar"
 import Loader from "./components/loader"
@@ -16,6 +17,7 @@ export default function BukuDetail() {
 
     const [loading, setLoading] = useState(false)
     const [bukuData, setBukuData] = useState({})
+    const [deadline, setDeadline] = useState('')
 
     function navigation(params) {
         setLoading(true)
@@ -33,6 +35,18 @@ export default function BukuDetail() {
                 tempData.push({ ...data.data(), id: data.id })
             })
             setBukuData(tempData[0])
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function pinjamBuku() {
+        try {
+            const alert = await swal({
+                icon: 'warning',
+                title: 'Ingin meminjam buku ini?',
+                buttons: ['Tidak', 'Iya']
+            })
         } catch (error) {
             console.log(error)
         }
@@ -90,9 +104,9 @@ export default function BukuDetail() {
                             <div className="form">
                                 <label htmlFor="deadline">Pinjam sampai hari?</label>
                                 {bukuData.dipinjam && (<input id="deadline" type="date" disabled />)}
-                                {bukuData.dipinjam === false && (<input id="deadline" type="date" />)}
+                                {bukuData.dipinjam === false && (<input id="deadline" type="date" onChange={(e) => setDeadline(e.target.value)} />)}
                             </div>
-                            {bukuData.dipinjam === false && (<button className="btn-pinjam">Pinjam</button>)}
+                            {bukuData.dipinjam === false && (<button className="btn-pinjam" onClick={() => pinjamBuku()}>Pinjam</button>)}
                         </div>
                     </Pinjam>
                 </Card>
@@ -105,21 +119,21 @@ const Container = styled.div`
     width:100%;
     height:100vh;
     display:flex;
-    flex-direction:column;
     justify-content:center;
     align-items:center;
 `
 
 const Card = styled.div`
-    margin-top:65px;
+    margin-top: 100px;
     width:90%;
-    height:80%;
+    height:70%;
     display:flex;
     
-
+    
     @media only screen and (max-width:700px){
         flex-direction:column;
         overflow: auto;
+        height:80%;
     }
 `
 
@@ -133,7 +147,7 @@ const Cover = styled.div`
         border-radius: 10px;
         width: 90%;
         height: 300px;
-        margin-top: 50px;
+        margin-top: 25px;
         display: flex;
         justify-content: center;
         align-items: center;
