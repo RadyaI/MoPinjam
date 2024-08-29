@@ -218,7 +218,7 @@ const Detail = styled.div`
 `
 
 const Pinjam = styled.div`
-    background-color:black;
+    border: 1px solid black;
     width:30%;
     height:100%;
 
