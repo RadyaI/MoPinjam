@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import styled, { keyframes } from "styled-components"
 import Cookies from "js-cookie"
+import QRCode from 'qrcode'
 
 import { db } from "../config/firebase"
 import { collection, getDocs, query, where } from "firebase/firestore"
@@ -11,10 +12,34 @@ export default function Cek() {
     const route = useNavigate()
     const [animation, setAnimation] = useState(false)
     const [notFound, setNotFound] = useState(false)
+    const [toggleQr, setToggleQr] = useState(false)
+    const canvasRef = useRef(null)
 
     const [idPinjam, setIdPinjam] = useState('')
     const [search, setSearch] = useState(false)
     const [bukuData, setbukuData] = useState({})
+
+    useEffect(() => {
+        if (toggleQr) {
+            const canvas = canvasRef.current;
+            if (canvas) {
+
+                QRCode.toCanvas(canvas, `https://perpus.radya.fun/return/${bukuData.id_pinjam}/${bukuData.id_buku}/${bukuData.email}`, {
+                    width: 300,
+                    height: 300,
+                }, function (error) {
+                    if (error) console.error(error);
+                    console.log('QR code generated successfully!');
+                });
+            }
+        }
+    }, [toggleQr]);
+
+    function closeQr() {
+        if (toggleQr) {
+            setToggleQr(false)
+        }
+    }
 
     async function searchPinjam(e) {
         if (e.key === "Enter") {
@@ -27,7 +52,6 @@ export default function Cek() {
 
             const get = await getDocs(query(collection(db, 'peminjaman'), where('id_pinjam', '==', idPinjam)))
             const tempData = []
-            let isEmpty
             get.forEach((data) => {
                 tempData.push({ ...data.data(), id: data.id })
             })
@@ -51,15 +75,18 @@ export default function Cek() {
     return (
         <>
             <Blob></Blob>
-            <Container>
+            {toggleQr && (<Qr>
+                <canvas ref={canvasRef} className="qrcode"></canvas>
+            </Qr>)}
+            <Container onClick={() => closeQr()}>
                 <div className="wrapper">
                     <div className={`top`}>
                         <div className="title"><h1>Cari ID Peminjaman:</h1></div>
                         {animation && (<div className="loading"></div>)}
-                        { notFound && (<div className="notFound">Data Peminjaman Tidak Ditemukan</div>)}
+                        {notFound && (<div className="notFound">Data Peminjaman Tidak Ditemukan</div>)}
                         <input type="text" placeholder="Cari berdasarkan id..." onKeyUp={(e) => searchPinjam(e)} onChange={(e) => setIdPinjam(e.target.value)} />
                     </div>
-                    {search && (<Card>
+                    {search && (<Card onClick={() => setToggleQr(true)}>
                         <div className="img"><img src={bukuData.gambar} alt="buku" loading="lazy" /></div>
                         <div className="body">
                             <div className="desc">
@@ -90,6 +117,21 @@ const Loading = keyframes`
     to {
         transform: rotate(360deg);
     }
+`
+
+const Qr = styled.div`
+    position: absolute;
+    z-index: 3;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    height: 350px;
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `
 
 const Container = styled.div`
