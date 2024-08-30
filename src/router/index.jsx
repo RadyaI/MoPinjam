@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Dashboard from "../dashboard";
 import semuaBuku from '../semuaBuku';
 import BukuDetail from "../bukuDetail";
+import ReturnBook from "../return";
 
 import Data from "../admin/data";
 import Cek from "../admin/cek";
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
     {
         path: '/peminjaman/cek',
         Component: Cek
+    },
+    {
+        path: '/return/:id_pinjam/:id_buku/:email',
+        Component: ReturnBook
     },
     {
         path: "*",
