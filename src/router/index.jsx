@@ -4,6 +4,7 @@ import semuaBuku from '../semuaBuku';
 import BukuDetail from "../bukuDetail";
 
 import Data from "../admin/data";
+import Cek from "../admin/cek";
 import Peminjaman from "../protected/peminjaman";
 
 import Protected from '../components/protectedRoute'
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
     {
         path: '/peminjaman',
         Component: () => <Protected Component={Peminjaman} />
+    },
+    {
+        path: '/peminjaman/cek',
+        Component: Cek
     },
     {
         path: "*",

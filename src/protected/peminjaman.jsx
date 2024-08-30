@@ -10,13 +10,29 @@ import { collection, getDocs, orderBy, query, where } from "firebase/firestore"
 export default function Peminjaman() {
 
     const [selected, setSelected] = useState('pinjam')
+    const [popup, setPopup] = useState(false)
+    const [search, setSearch] = useState('')
 
     const [peminjamanData, setPeminjamanData] = useState([])
+    const [idPeminjaman, setIdPeminjaman] = useState(123)
+
+    function closePopUp() {
+        if (popup) {
+            setPopup(false)
+        }
+    }
 
     function BukuPinjam() {
-        const card = peminjamanData.map((i, index) =>
-            <div className="card" key={index}>
-                <div className="img"><img src={i.gambar} alt={i.judul} /></div>
+
+        let filtered = peminjamanData
+
+        if (search !== '') {
+            filtered = filtered.filter(i => i.judul.toLowerCase().includes(search.toLowerCase()))
+        }
+
+        const card = filtered.map((i, index) =>
+            <div className="card" key={index} onClick={() => { setPopup(true); setIdPeminjaman(i.id_pinjam); }}>
+                <div className="img"><img src={i.gambar} alt={i.judul} loading="lazy" /></div>
                 <div className="body">
                     <div className="desc">
                         <div className="author"><small>{i.penulis}</small></div>
@@ -50,17 +66,26 @@ export default function Peminjaman() {
     return (
         <>
             <Navbar></Navbar>
-            <Container>
+            <Container onClick={closePopUp}>
+                {popup && (<div className="popup">
+                    <div className="title">ID Peminjaman:</div>
+                    <div className="id">{idPeminjaman}</div>
+                </div>)}
                 <Wrapper>
                     <Menu>
-                        <button className={`history ${selected === 'history' ? 'selected' : ''}`} onClick={() => setSelected('history')}>History</button>
-                        <button className={`pinjam ${selected === 'pinjam' ? 'selected' : ''}`} onClick={() => setSelected('pinjam')}>Pinjam</button>
+                        <div className="select">
+                            <button className={`history ${selected === 'history' ? 'selected' : ''}`} onClick={() => setSelected('history')}>History</button>
+                            <button className={`pinjam ${selected === 'pinjam' ? 'selected' : ''}`} onClick={() => setSelected('pinjam')}>Pinjam</button>
+                        </div>
+                        <div className="search">
+                            <input type="text" placeholder="Cari judul buku..." onChange={(e) => setSearch(e.target.value)} />
+                        </div>
                     </Menu>
                     <Card>
-                        { selected === 'pinjam' && (<PinjamCard>
+                        {selected === 'pinjam' && (<PinjamCard>
                             <BukuPinjam></BukuPinjam>
                         </PinjamCard>)}
-                        { selected == 'history' && (<HistoryCard></HistoryCard>)}
+                        {selected == 'history' && (<HistoryCard></HistoryCard>)}
                     </Card>
                 </Wrapper>
             </Container>
@@ -68,12 +93,57 @@ export default function Peminjaman() {
     )
 }
 
+const popup = keyframes`
+    0% {
+        width: 0px;
+        height: 0px;
+    }
+    50% {
+        width: 170px;
+        height: 120px;
+    }
+    100% {
+        width: 150px;
+        height: 100px;
+    }
+`
+
 const Container = styled.div`
     width: 100%;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    .popup{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #202938;
+        text-align: center;
+        width: 150px;
+        height: 100px;
+        padding: 10px;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        animation: ${popup} 0.3s;
+    }
+
+    .popup .title{
+        font-weight: bold;
+    }
+
+    .popup .id{
+        font-weight: bold;
+        font-size: 20px;
+        margin-top: 10px;
+    }
+
 `
 
 const Wrapper = styled.div`
@@ -90,6 +160,8 @@ const color = keyframes`
 const Menu = styled.div`
     margin-top: 20px;
     padding: 5px;
+    display: flex;
+    justify-content: flex-start;
 
     button{
         padding: 11px 28px;
@@ -99,11 +171,24 @@ const Menu = styled.div`
         font-size: 15px;
     }
 
-    .history{
+    input{
+        padding: 11px 10px;
+        width: 100%;
+        outline: none;
+        border: 1px solid black;
+        border-radius: 50px;
+    }
+
+    .search{
+        width: 50%;
+        margin-left: 30px;
+    }
+
+    .select .history{
         border-radius: 50px 0 0 50px;
     }
 
-    .pinjam{
+    .select .pinjam{
         border-radius: 0 50px 50px 0;
     }
 
@@ -111,6 +196,16 @@ const Menu = styled.div`
         background-color: #202938;
         color: white;
         animation: ${color} 0.2s linear;
+    }
+
+    @media only screen and (max-width:700px){
+        flex-direction: column;
+
+        .search{
+            width: 80%;
+            margin-top: 20px;
+            margin-left: 0;
+        }
     }
 `
 
@@ -138,6 +233,11 @@ const PinjamCard = styled.div`
         height: 260px;
         padding-top: 10px;
         cursor: pointer;
+        transition: box-shadow 0.5s;
+    }
+
+    .card:hover{
+        box-shadow: 3px 3px 0 3px #2d3940, -3px -3px 0 3px #efefef;
     }
 
     .card .img{
@@ -171,6 +271,12 @@ const PinjamCard = styled.div`
     
     .card .body .desc .title{
         margin-top: 5px;
+    }
+
+    @media only screen and (max-width:700px){
+        .card{
+            margin: 0 auto;
+        }
     }
 `
 

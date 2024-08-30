@@ -50,7 +50,9 @@ export default function BukuDetail() {
             })
             if (alert) {
                 const userData = JSON.parse(Cookies.get('loginData'))
+                const id_pinjam = bukuData.id
                 const data = {
+                    id_pinjam: id_pinjam.slice(0, 5),
                     user: userData.displayName,
                     email: userData.email,
                     id_buku: bukuData.id,
