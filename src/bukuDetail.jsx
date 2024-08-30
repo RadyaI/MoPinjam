@@ -2,12 +2,13 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
 import swal from "sweetalert"
+import Cookies from "js-cookie"
 
 import Navbar from "./components/navbar"
 import Loader from "./components/loader"
 import Float from "./components/protected/float"
 
-import { collection, getDocs, query, where } from "firebase/firestore"
+import { addDoc, collection, doc, getDocs, query, Timestamp, updateDoc, where } from "firebase/firestore"
 import { db } from "./config/firebase"
 
 export default function BukuDetail() {
@@ -47,6 +48,31 @@ export default function BukuDetail() {
                 title: 'Ingin meminjam buku ini?',
                 buttons: ['Tidak', 'Iya']
             })
+            if (alert) {
+                const userData = JSON.parse(Cookies.get('loginData'))
+                const data = {
+                    user: userData.displayName,
+                    email: userData.email,
+                    id_buku: bukuData.id,
+                    judul: bukuData.judul,
+                    tanggal_pinjam: new Date().toLocaleDateString(),
+                    deadline: deadline,
+                    time: Timestamp.now().toMillis()
+                }
+                await updateDoc(doc(db, 'buku', bukuData.id), { dipinjam: true })
+                await addDoc(collection(db, 'peminjaman'), data)
+                swal({
+                    icon: 'success',
+                    title: 'Berhasil meminjam buku ini',
+                    button: 'Ok'
+                }).then(
+                    (redirect) => {
+                        if (redirect) {
+                            route('/peminjaman')
+                        }
+                    }
+                )
+            }
         } catch (error) {
             console.log(error)
         }

@@ -35,35 +35,40 @@ export default function Semuabuku() {
     }
 
     function BookList() {
-
-        let filteredBook = book
+        
+        let filteredBook = book;
+    
         if (search !== '') {
-            filteredBook = book.filter(i => i.judul.toLowerCase().includes(search.toLowerCase()) || i.penulis.toLowerCase().includes(search.toLowerCase()))
+            filteredBook = filteredBook.filter(i => 
+                i.judul.toLowerCase().includes(search.toLowerCase()) || 
+                i.penulis.toLowerCase().includes(search.toLowerCase())
+            );
         }
 
-        if(sidebarFilter.selectedOption === 'tersedia'){
-            filteredBook = book.filter(i => i.dipinjam === false)
+        if (sidebarFilter.selectedOption === 'tersedia') {
+            filteredBook = filteredBook.filter(i => i.dipinjam === false);
         }
-
-
+    
         if (sidebarFilter.basicFilter === 'terbaru') {
-            filteredBook = book.sort((a, b) => b.time - a.time)
+            filteredBook = filteredBook.sort((a, b) => b.time - a.time);
         } else if (sidebarFilter.basicFilter === 'popular') {
-            filteredBook = book.sort((a, b) => b.jumlah_dipinjam - a.jumlah_dipinjam)
+            filteredBook = filteredBook.sort((a, b) => b.jumlah_dipinjam - a.jumlah_dipinjam);
         }
-
-
+    
         const data = filteredBook.map((i, index) =>
             <div className="card" key={index} onClick={() => goToDetail(i.judul)}>
                 <div className="img-cover"><img loading='lazy' width="160" height="200" src={i.gambar} alt="Buku" /></div>
                 <div className="desc">
-                    <div className="author"><small>{i.penulis}</small></div>
+                    <div className="author"><small>{i.penulis} </small></div>
                     <div className="title">{i.judul}</div>
+                    { i.dipinjam && (<div className="status"><small>Tidak tersedia</small></div>)}
                 </div>
             </div>
-        )
-        return data
+        );
+    
+        return data;
     }
+    
 
     async function getBuku() {
         try {
