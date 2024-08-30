@@ -54,7 +54,9 @@ export default function BukuDetail() {
                     user: userData.displayName,
                     email: userData.email,
                     id_buku: bukuData.id,
+                    penulis: bukuData.penulis,
                     judul: bukuData.judul,
+                    gambar: bukuData.gambar,
                     tanggal_pinjam: new Date().toLocaleDateString(),
                     deadline: deadline,
                     time: Timestamp.now().toMillis()
