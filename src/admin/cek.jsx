@@ -74,11 +74,11 @@ export default function Cek() {
 
     return (
         <>
-            <Blob></Blob>
             {toggleQr && (<Qr>
                 <canvas ref={canvasRef} className="qrcode"></canvas>
             </Qr>)}
             <Container onClick={() => closeQr()}>
+                <Blob></Blob>
                 <div className="wrapper">
                     <div className={`top`}>
                         <div className="title"><h1>Cari ID Peminjaman:</h1></div>
@@ -135,7 +135,7 @@ const Qr = styled.div`
 `
 
 const Container = styled.div`
-    background-color: #ecedef;
+    border: 1px solid black;
     width: 100%;
     height: 100vh;
     display: flex;
@@ -257,4 +257,8 @@ const Blob = styled.div`
     width: 500px;
     height: 350px;
     background-color: lightblue;
+
+    @media only screen and (max-width:700px){
+        display: none;
+    }
 `
