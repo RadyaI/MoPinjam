@@ -63,7 +63,7 @@ export default function ReturnBook() {
                     }).then(
                         (redirect) => {
                             if (redirect) {
-                                location.href = '/'
+                                location.href = '/peminjaman'
                             }
                         }
                     )
