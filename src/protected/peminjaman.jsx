@@ -14,6 +14,7 @@ export default function Peminjaman() {
     const [search, setSearch] = useState('')
 
     const [peminjamanData, setPeminjamanData] = useState([])
+    const [historyData, setHistoryData] = useState([])
     const [idPeminjaman, setIdPeminjaman] = useState(123)
 
     function closePopUp() {
@@ -45,6 +46,31 @@ export default function Peminjaman() {
         return card
     }
 
+    function HistoryDisplay() {
+        try {
+            let filteredData = historyData
+
+            filteredData.sort(((a, b) => b.time - a.time))
+            if (search !== '') {
+                filteredData = filteredData.filter(i => i.judul.toLowerCase().includes(search.toLowerCase()))
+            }
+
+            const tabel = filteredData.map((i, index) =>
+                <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{i.user}</td>
+                    <td>{i.judul}</td>
+                    <td>{i.tanggal_pinjam}</td>
+                    <td>{i.tanggal_kembali}</td>
+                </tr>
+            )
+
+            return tabel
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     async function getPeminjaman() {
         try {
             const userLogin = JSON.parse(Cookies.get('loginData')).displayName
@@ -59,7 +85,22 @@ export default function Peminjaman() {
         }
     }
 
+    async function getHistory() {
+        try {
+            const currentEmail = JSON.parse(Cookies.get('loginData')).email
+            const get = await getDocs(query(collection(db, 'history'), where('email', '==', currentEmail)))
+            const tempData = []
+            get.forEach((data) => {
+                tempData.push({ ...data.data(), id: data.id })
+            })
+            setHistoryData(tempData)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
+        getHistory()
         getPeminjaman()
     }, [])
 
@@ -85,7 +126,22 @@ export default function Peminjaman() {
                         {selected === 'pinjam' && (<PinjamCard>
                             <BukuPinjam></BukuPinjam>
                         </PinjamCard>)}
-                        {selected == 'history' && (<HistoryCard></HistoryCard>)}
+                        {selected == 'history' && (<HistoryCard>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama</th>
+                                        <th>Judul</th>
+                                        <th>Tanggal Pinjam</th>
+                                        <th>Tanggal Kembali</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <HistoryDisplay></HistoryDisplay>
+                                </tbody>
+                            </table>
+                        </HistoryCard>)}
                     </Card>
                 </Wrapper>
             </Container>
@@ -281,9 +337,34 @@ const PinjamCard = styled.div`
 `
 
 const HistoryCard = styled.div`
-    border: 1px solid red;
     padding: 10px 5px;
     overflow-y: auto;
     width: 95%;
     height: 90%;
+
+    table{
+        width: 100%;
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    tr th{
+        border: 1px solid black;
+        padding: 5px;
+        text-align: center;
+        background-color: #202938;
+        color: white;
+    }
+
+    tr td{
+        border: 1px solid black;
+        padding: 5px;
+        text-align: center;
+    }
+
+    tbody tr:hover{
+        background-color: #efefef;
+    }
+
 `
+
